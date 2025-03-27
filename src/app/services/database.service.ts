@@ -101,7 +101,7 @@ export class DatabaseService {
   }
 
   // Weitere Hilfsmethoden
-  markiereSchiffAlsZerstört(positionId: number): Observable<any> {
+  markiereSchiffAlsZerstoert(positionId: number): Observable<any> {
     return this.executeQuery(
       `UPDATE schiff_position SET zerstört = 1 WHERE schiff_position_id = ${positionId};`
     );
