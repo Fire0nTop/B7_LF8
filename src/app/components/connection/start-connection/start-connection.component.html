@@ -1,0 +1,25 @@
+<div>
+  <p>Your ID: {{ peerService.peerId() }}</p>
+  <p>Status: {{ status() }}</p>
+  @if (peerService.connectionError()) {
+    <p class="error">Error: {{ peerService.connectionError() }}</p>
+  }
+
+  <input
+    #peerIdInput
+    placeholder="Enter peer ID"
+    [disabled]="peerService.isConnected()"
+  >
+  <button
+    (click)="connect(peerIdInput.value)"
+    [disabled]="peerService.isConnected() || !peerIdInput.value"
+  >
+    Connect
+  </button>
+  <button
+    (click)="disconnect()"
+    [disabled]="!peerService.isConnected()"
+  >
+    Disconnect
+  </button>
+</div>

@@ -23,7 +23,7 @@ function initConnection(connection: DataConnection) {
 @Injectable({
   providedIn: 'root',
 })
-export class PeerJsService {
+export class PeerjsServiceOld {
 
   @Output() onReceiveData = onReceiveData;
   @Output() onConnection = onConnection;
