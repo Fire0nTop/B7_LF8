@@ -13,7 +13,7 @@ function initConnection(connection: DataConnection) {
   conn.on('open', function() {
     onConnection.emit(conn?.peer)
     isConnected.set(true);
-    conn?.on('data', function(data) {
+    conn?.on('data', function(data:any) {
       onReceiveData.emit(data)
       console.log(data);
     });
@@ -32,7 +32,7 @@ export class PeerJsService {
 
   constructor() {
 
-    peer.on('open', function(id) {
+    peer.on('open', function(id : string) {
       peerId.set(id)
     })
     peer.on('connection', function (c:any) {
