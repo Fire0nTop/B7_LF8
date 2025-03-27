@@ -1,4 +1,4 @@
-class Zug {
+export class Zug {
   kordinateX: number;
   kordinateY: number;
   treffer: boolean;

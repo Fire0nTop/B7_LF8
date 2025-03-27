@@ -1,4 +1,4 @@
-class SchiffPosition {
+export class SchiffPosition {
   schiffPositionId: number;
   schiffId: number;
   spielId: number;

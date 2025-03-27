@@ -1,4 +1,4 @@
-class Spiel {
+export class Spiel {
   spielId: number;
 
   constructor(spielId: number) {

@@ -1,4 +1,4 @@
-class Schiff {
+export class Schiff {
   schiffId: number;
   schiffName: string;
   horizontalGroesse: number;
