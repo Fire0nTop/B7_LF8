@@ -1,0 +1,17 @@
+<div>
+  <div>
+    @for (message of messages; track message.text) {
+      <p>{{message.sender}}: {{message.text}}</p>
+    }
+  </div>
+
+  <div>
+    <input
+      type="text"
+      [(ngModel)]="inputText"
+      (keyup.enter)="sendButtonClicked()"
+      placeholder="Type a message..."
+    >
+    <button (click)="sendButtonClicked()">Send</button>
+  </div>
+</div>
