@@ -5,7 +5,7 @@ import {LandigPageComponent} from './components/pages/landig-page/landig-page.co
 
 
 export const routes: Routes = [
-  { path: 'landing', component: LandigPageComponent},
+  { path: '', component: LandigPageComponent},
   { path: 'game', component: GameComponent },
   { path: '**', redirectTo: '/404'},
 ];
