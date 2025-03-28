@@ -6,9 +6,8 @@ import {StartConnectionComponent} from './components/connection/start-connection
 
 
 export const routes: Routes = [
-  { path: '', component: LandigPageComponent},
-  { path: '/user', component: StartConnectionComponent },
-  { path: '/game', component: GameComponent },
+  { path: '', component: LandigPageComponent },
+  { path: 'start-connection', component: StartConnectionComponent },
   { path: '**', redirectTo: '/404'},
 ];
 
