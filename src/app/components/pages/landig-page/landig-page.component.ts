@@ -8,7 +8,9 @@ import {GameService} from '../../../services/game-service/game-service.service';
   imports: [
     FormsModule
   ],
-  templateUrl: './landig-page.component.html'
+  templateUrl: './landig-page.component.html',
+  styleUrls: ['./landig-page.component.scss']
+
 })
 
 export class LandigPageComponent {
@@ -20,10 +22,12 @@ export class LandigPageComponent {
   onSubmit(form: NgForm) {
     if (form.valid) {
       this.gameService.setPlayerName(form.value.username);
-      this.router.navigate(['/game']);
+      this.router.navigate(['/user']).then(r => this.router.navigate(['/user']));
     }
   }
 
-  protected readonly name = name;
+
+
+  public readonly name = name;
 }
 
