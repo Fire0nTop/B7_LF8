@@ -1,13 +1,13 @@
-import {ConnectionPageComponent} from './components/pages/connection-page/connection-page.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {GameComponent} from './components/game/game.component';
+import {LandigPageComponent} from './components/pages/landig-page/landig-page.component';
 
 
 export const routes: Routes = [
-  { path: '', component: ConnectionPageComponent},
-  { path: '**', redirectTo: '/404'},
+  { path: 'landing', component: LandigPageComponent},
   { path: 'game', component: GameComponent },
+  { path: '**', redirectTo: '/404'},
 ];
 
 @NgModule({
