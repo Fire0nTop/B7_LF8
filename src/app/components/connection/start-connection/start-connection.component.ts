@@ -9,22 +9,10 @@ import {toSignal} from '@angular/core/rxjs-interop';
   templateUrl: './start-connection.component.html'
 })
 export class StartConnectionComponent {
-  peerService = inject(PeerService);
-  status = signal('Disconnected');
-
-  constructor() {
-    effect(() => {
-      this.status.set(
-        this.peerService.isConnected()
-          ? `Connected to ${this.peerService.getConnectedPeerId() || 'peer'}`
-          : 'Disconnected'
-      );
-    });
-  }
+  constructor(protected peerService:PeerService) {}
 
   connect(peerId: string) {
     if (peerId) {
-      this.status.set('Connecting...');
       this.peerService.connectTo(peerId);
     }
   }

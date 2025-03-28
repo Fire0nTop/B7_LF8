@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import {PeerService} from '../../../services/peer.service';
 import {FormsModule} from '@angular/forms';
+import {PeerService} from '../../../services/peer-service/peer-service.service';
 
 export interface Message {
-  id: number;
   text: string;
   sender: 'user' | 'other';
-  timestamp: string;
 }
 
 @Component({
@@ -22,14 +20,18 @@ export class ChatComponent {
   inputText = '';
 
   constructor(private peerService: PeerService) {
-    peerService.onReceiveData.subscribe(data => {
-
+    peerService.onDataReceived$.subscribe(data => {
+        this.messages.push({
+          text:data,
+          sender: "other"
+        })
     })
   }
 
   sendMessage(text:string) {
     if (this.peerService.isConnected()) {
       this.peerService.sendData(text);
+      this.messages.push({text:text,sender:"user"})
     }
   }
 

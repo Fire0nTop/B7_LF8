@@ -1,6 +1,11 @@
 <div>
   <p>Your ID: {{ peerService.peerId() }}</p>
-  <p>Status: {{ status() }}</p>
+  @if (this.peerService.isConnected()) {
+    <p>Status: Connected to {{this.peerService.getConnectedPeerId()}}</p>
+  } @else {
+    <p>Status: Disconnected</p>
+  }
+
   @if (peerService.connectionError()) {
     <p class="error">Error: {{ peerService.connectionError() }}</p>
   }

@@ -1,8 +1,8 @@
 <div>
-  <div class="message-history">
-    <div *ngFor="let message of messages">
-      [{{message.timestamp}}] {{message.sender}}: {{message.text}}
-    </div>
+  <div>
+    @for (message of messages; track message.text) {
+      <p>{{message.sender}}: {{message.text}}</p>
+    }
   </div>
 
   <div>
