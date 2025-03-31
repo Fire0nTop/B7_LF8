@@ -1,7 +1,7 @@
 import {Injectable, Signal} from '@angular/core';
 import {PeerService} from '../peer-service/peer-service.service';
-import {MessageData} from '../../models/connection/message-data';
-import {GameData} from '../../models/connection/game-data';
+import {MessageData} from '../../models/connection';
+import {GameData} from '../../models/connection';
 import {Subject} from 'rxjs';
 
 @Injectable({

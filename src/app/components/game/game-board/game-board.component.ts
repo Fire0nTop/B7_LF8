@@ -11,4 +11,10 @@ import {Board} from '../../../models/game/board';
 })
 export class GameBoardComponent {
   public board = new Board(10,10)
+
+  constructor() {
+    console.log(this.board)
+  }
+
+  protected readonly String = String;
 }

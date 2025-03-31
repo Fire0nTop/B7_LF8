@@ -1,18 +1,16 @@
-import {Cell} from './cell';
+import { Cell } from './cell';
 
 export class Board {
+  public board: Cell[][];
 
-  public board: [Cell[]];
-
-  constructor(public sizeX:number, sizeY:number) {
-    let board: [Cell[]] = [[]]
+  constructor(public sizeX: number, public sizeY: number) {
+    this.board = [];
     for (let x = 0; x < sizeX; x++) {
-      let a: Cell[] = []
+      let row: Cell[] = [];
       for (let y = 0; y < sizeY; y++) {
-        a.push(new Cell())
+        row.push(new Cell());
       }
-      board.push(a)
+      this.board.push(row);
     }
-    this.board = board
   }
 }
