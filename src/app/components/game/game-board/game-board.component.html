@@ -1,0 +1,11 @@
+<div class="aspect-square w-full">
+  <div class="flex flex-row">
+    @for (row of this.board.board; track row) {
+      <div class="flex flex-col">
+        @for (cell of row; track cell) {
+          <app-game-cell></app-game-cell>
+        }
+      </div>
+    }
+  </div>
+</div>
