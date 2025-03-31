@@ -2,7 +2,7 @@ import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Schiff, SchiffPosition, Spiel, Zug, Spieler } from '../models/index'; // Annahme: Modelle sind in dieser Datei
+import { Schiff, SchiffPosition, Spiel, Zug, Spieler } from '../models/index';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class DatabaseService {
 
   constructor(private http: HttpClient) { }
 
-  private executeQuery(query: string): Observable<any> {
+  executeQuery(query: string): Observable<any> {
     const body = new URLSearchParams();
     body.set('query', query);
 
