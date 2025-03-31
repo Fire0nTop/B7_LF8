@@ -11,4 +11,7 @@ export class GameService {
   setPlayerName(name: string) {
     this.playerName.next(name);
   }
+  getPlayerName() {
+    return this.playerName.asObservable();
+  }
 }
