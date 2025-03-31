@@ -1,15 +1,18 @@
-import {Component, effect, inject, OnDestroy, OnInit, signal} from '@angular/core';
-import {PeerService} from '../../../services/peer-service/peer-service.service';
-import {Subscription} from 'rxjs';
-import {toSignal} from '@angular/core/rxjs-interop';
+import { Component } from '@angular/core';
+import { PeerService } from '../../../services/peer-service/peer-service.service';
+import { GameService } from '../../../services/game-service/game-service.service';
 
 @Component({
-  selector: 'app-start-connection',
-  imports: [],
-  templateUrl: './start-connection.component.html'
+  selector: 'start-connection',
+  standalone: true,
+  templateUrl: './start-connection.component.html',
+  styleUrls: ['./start-connection.component.scss']
 })
 export class StartConnectionComponent {
-  constructor(protected peerService:PeerService) {}
+  constructor(
+    protected peerService: PeerService,
+    protected gameService: GameService
+  ) {}
 
   connect(peerId: string) {
     if (peerId) {
