@@ -1,58 +1,61 @@
-import {Injectable, Signal} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {PeerService} from '../peer-service/peer-service.service';
-import {MessageData} from '../../models/connection';
-import {GameData} from '../../models/connection';
-import {Subject} from 'rxjs';
+import {Attack} from '@models/connection';
+import {AttackAnswer} from '@models/index';
+import {AttackResult} from '@models/index';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConnectionService {
-
-  private messageReceived$ = new Subject<MessageData>();
-  private gameDataReceived$ = new Subject<GameData>();
-
-  // Public observables for consumers
-  public onMessage$ = this.messageReceived$.asObservable();
-  public onGameData$ = this.gameDataReceived$.asObservable();
-
+  
   constructor(private peerService: PeerService) {
-    this.peerService.onDataReceived$.subscribe(data => {
-      this.handleIncomingData(data);
+    this.listenForMessages()
+  }
+
+  public connectToPeer(peerId: string) {
+    this.peerService.connectTo(peerId);
+  }
+
+  public disconnect() {
+    this.peerService.disconnect();
+  }
+
+  public getConnectedPeerId(): string | null {
+    return this.peerService.getConnectedPeerId()
+  }
+
+  public sendAttack(attack:Attack): Promise<AttackAnswer> {
+    return new Promise<AttackAnswer>((resolve) => {
+      this.peerService.sendData({ type: 'attack', attack });
+
+      const subscription = this.peerService.onDataReceived$.subscribe((data) => {
+        if (data.type === 'attackAnswer') {
+          resolve({attackResult: data.attackResult});
+          subscription.unsubscribe();
+        }
+      });
+    })
+  }
+
+  public sendGame(game:Game) {
+    this.peerService.sendData({ type: 'game', game });
+  }
+
+  private listenForMessages(): void {
+    this.peerService.onDataReceived$.subscribe((data) => {
+      if (data.type === 'attack') {
+        this.sendAttackResult(data);
+        console.log(`Incoming attack at (${data.x}, ${data.y})`);
+      } else if (data.type === 'gameOver') {
+        console.log('Game Over received');
+      } else if (data.type === 'game') {
+        console.log('Game received: ' + data);
+      }
     });
   }
 
-  public sendMessage(messageData: MessageData): boolean {
-    return this.peerService.sendData({
-      type: 'message',
-      ...messageData
-    });
-  }
-
-  public sendGameData(gameData: GameData): boolean {
-    return this.peerService.sendData({
-      type: 'gameData',
-      ...gameData
-    });
-  }
-
-  private handleIncomingData(data: unknown): void {
-    if (this.isMessageData(data)) {
-      this.messageReceived$.next(data);
-    } else if (this.isGameData(data)) {
-      this.gameDataReceived$.next(data);
-    }
-  }
-
-  private isMessageData(data: any): data is MessageData {
-    return data?.type === 'message' &&
-      typeof data.text === 'string' &&
-      data.timestamp !== undefined;
-  }
-
-  private isGameData(data: any): data is GameData {
-    return data?.type === 'gameData' &&
-      data.gameState !== undefined &&
-      data.playerActions !== undefined;
+  private sendAttackResult(attack:Attack): void {
+    this.peerService.sendData({attackResult:AttackResult.miss} as AttackAnswer);
   }
 }
