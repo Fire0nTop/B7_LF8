@@ -8,7 +8,7 @@ import {AttackResult} from '@models/index';
   providedIn: 'root'
 })
 export class ConnectionService {
-
+  
   constructor(private peerService: PeerService) {
     this.listenForMessages()
   }
