@@ -1,6 +1,5 @@
 import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Schiff, SchiffPosition, Spiel, Zug, Spieler } from '../models/index';
 
@@ -10,17 +9,38 @@ import { Schiff, SchiffPosition, Spiel, Zug, Spieler } from '../models/index';
 export class DatabaseService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
-  executeQuery(query: string): Observable<any> {
+  private async executeFetch(query: string): Promise<any> {
     const body = new URLSearchParams();
     body.set('query', query);
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
+    const response = await fetch(this.apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: body.toString()
     });
 
-    return this.http.post<any>(this.apiUrl, body.toString(), { headers });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  executeQuery(query: string): Observable<any> {
+    return new Observable(observer => {
+      this.executeFetch(query)
+        .then(data => {
+          observer.next(data);
+          observer.complete();
+        })
+        .catch(error => {
+          observer.error(error);
+        });
+    });
   }
 
   // Schiff-Methoden
@@ -35,13 +55,13 @@ export class DatabaseService {
   createSchiff(schiff: Schiff): Observable<any> {
     const query = `
       INSERT INTO schiff
-      (schiff_name, horizontal_groesse, vertikal_groesse, schiff_anzahl)
+        (schiff_name, horizontal_groesse, vertikal_groesse, schiff_anzahl)
       VALUES (
-        '${schiff.schiffName}',
-        ${schiff.horizontalGroesse},
-        ${schiff.vertikalGroesse},
-        ${schiff.schiffAnzahl}
-      );`;
+                 '${schiff.schiffName}',
+                 ${schiff.horizontalGroesse},
+                 ${schiff.vertikalGroesse},
+                 ${schiff.schiffAnzahl}
+             );`;
     return this.executeQuery(query);
   }
 
@@ -58,14 +78,14 @@ export class DatabaseService {
   setzeSchiffPosition(position: SchiffPosition): Observable<any> {
     const query = `
       INSERT INTO schiff_position
-      (schiff_id, spiel_id, position_x, position_y, zerstört)
+        (schiff_id, spiel_id, position_x, position_y, zerstört)
       VALUES (
-        ${position.schiffId},
-        ${position.spielId},
-        ${position.positionX},
-        ${position.positionY},
-        ${position.zerstört ? 1 : 0}
-      );`;
+               ${position.schiffId},
+               ${position.spielId},
+               ${position.positionX},
+               ${position.positionY},
+               ${position.zerstört ? 1 : 0}
+             );`;
     return this.executeQuery(query);
   }
 
@@ -77,15 +97,15 @@ export class DatabaseService {
   speichereZug(zug: Zug): Observable<any> {
     const query = `
       INSERT INTO zug
-      (kordinate_x, kordinate_y, treffer, runde, spieler, spiel_id)
+        (kordinate_x, kordinate_y, treffer, runde, spieler, spiel_id)
       VALUES (
-        ${zug.kordinateX},
-        ${zug.kordinateY},
-        ${zug.treffer ? 1 : 0},
-        ${zug.runde},
-        ${zug.spielerId},
-        ${zug.spielId}
-      );`;
+               ${zug.kordinateX},
+               ${zug.kordinateY},
+               ${zug.treffer ? 1 : 0},
+               ${zug.runde},
+               ${zug.spielerId},
+               ${zug.spielId}
+             );`;
     return this.executeQuery(query);
   }
 

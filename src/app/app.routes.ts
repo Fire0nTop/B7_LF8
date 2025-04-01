@@ -8,7 +8,7 @@ import {SqlTesterComponent} from './components/pages/sql-tester/sql-tester.compo
 
 export const routes: Routes = [
 
-  { path: 'sql', component: SqlTesterComponent },
+  { path: '', component: SqlTesterComponent },
   { path: 's', component: LandigPageComponent },
   { path: 'start-connection', component: StartConnectionComponent },
   { path: '**', redirectTo: '/404'},
