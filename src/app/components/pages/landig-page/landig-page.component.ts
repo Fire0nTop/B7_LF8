@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GameService } from '../../../services/game-service/game-service.service';
+import { GameService } from '@services/game-service/game-service.service';
 
 @Component({
   selector: 'app-landig-page',
