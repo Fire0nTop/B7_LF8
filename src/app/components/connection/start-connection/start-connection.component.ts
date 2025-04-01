@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PeerService } from '../../../services/peer-service/peer-service.service';
-import { GameService } from '../../../services/game-service/game-service.service';
+import { GameService } from '../../../services/game-service/game.service';
 
 @Component({
   selector: 'start-connection',
