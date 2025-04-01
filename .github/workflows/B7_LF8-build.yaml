@@ -14,7 +14,7 @@ on:
         type: string
 
 env:
-  DEPLOYMENT_FOLDER: B7_LF8
+  DEPLOYMENT_FOLDER: deployment
 
 jobs:
 # Please do not rename this job
@@ -51,5 +51,5 @@ jobs:
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
           folder: ${{ env.DEPLOYMENT_FOLDER }}
-          config-file: .deploy-now/B7_LF8/config.yaml
+          config-file: .deploy-now/deployment/config.yaml
           action: upload
