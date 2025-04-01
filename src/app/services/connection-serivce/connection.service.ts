@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {PeerService} from '../peer-service/peer-service.service';
-import {Attack} from '../../models/connection';
-import {AttackAnswer} from '../../models/connection';
-import {AttackResult} from '../../models/connection';
+import {Attack} from '@models/connection';
+import {AttackAnswer} from '@models/index';
+import {AttackResult} from '@models/index';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +38,10 @@ export class ConnectionService {
     })
   }
 
+  public sendGame(game:Game) {
+    this.peerService.sendData({ type: 'game', game });
+  }
+
   private listenForMessages(): void {
     this.peerService.onDataReceived$.subscribe((data) => {
       if (data.type === 'attack') {
@@ -45,6 +49,8 @@ export class ConnectionService {
         console.log(`Incoming attack at (${data.x}, ${data.y})`);
       } else if (data.type === 'gameOver') {
         console.log('Game Over received');
+      } else if (data.type === 'game') {
+        console.log('Game received: ' + data);
       }
     });
   }
