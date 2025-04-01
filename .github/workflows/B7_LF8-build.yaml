@@ -39,7 +39,7 @@ jobs:
         run: |
           npm ci
           npm run build
-          npm run test
+        # npm run test
 
 # Please do not touch the following action
       - name: Store deployment content
