@@ -1,0 +1,90 @@
+<!-- sql-tester.component.html -->
+<div class="min-h-screen bg-indigo-950 text-gray-200 p-4 font-mono">
+  <div class="max-w-4xl mx-auto border-4 border-indigo-700 bg-indigo-900 p-6 shadow-lg shadow-black">
+    <h1 class="text-3xl text-center text-yellow-400 font-bold mb-8 drop-shadow-[2px_2px_0px_rgba(138,90,26,1)]">
+      ⚓ SCHIFFE VERSENKEN SQL TESTER ⚓
+    </h1>
+
+    <!-- Query Input Section -->
+    <div class="border-4 border-indigo-700 p-4 mb-6 bg-indigo-950">
+      <h2 class="text-xl mb-2 text-yellow-300">SQL Query</h2>
+      <textarea
+        class="w-full h-32 bg-indigo-950 border-4 border-indigo-700 text-gray-200 p-3 mb-4 resize-y"
+        placeholder="Enter your SQL query here...">
+      </textarea>
+
+      <div class="flex justify-between mb-2">
+        <button
+          (click)="executeQuery()"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 px-4 py-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          Execute Query
+        </button>
+        <button
+          (click)="clearQuery()"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 px-4 py-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          Clear
+        </button>
+      </div>
+    </div>
+test
+    <!-- Results Section -->
+    <div class="border-4 border-indigo-700 p-4 mb-6 bg-indigo-950">
+      <h2 class="text-xl mb-2 text-yellow-300">Results</h2>
+      <pre class="w-full h-96 bg-indigo-950 border-4 border-indigo-700 text-gray-200 p-3 overflow-auto">{{queryResult}}</pre>
+    </div>
+
+    <!-- Example Queries Section -->
+    <div class="border-4 border-indigo-700 p-4 bg-indigo-950">
+      <h2 class="text-xl mb-4 text-yellow-300">Example Queries</h2>
+
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <button
+          (click)="loadExample('getShips')"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 p-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          <div class="flex items-center justify-center">
+            <div class="w-4 h-4 bg-teal-500 mr-2"></div>
+            Get Ships
+          </div>
+        </button>
+
+        <button
+          (click)="loadExample('getGames')"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 p-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          <div class="flex items-center justify-center">
+            <div class="w-4 h-4 bg-blue-600 mr-2"></div>
+            Get Games
+          </div>
+        </button>
+
+        <button
+          (click)="loadExample('getHits')"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 p-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          <div class="flex items-center justify-center">
+            <div class="w-4 h-4 bg-red-500 mr-2"></div>
+            Get Hits
+          </div>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <button
+          (click)="loadExample('createShip')"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 p-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          Create Ship
+        </button>
+
+        <button
+          (click)="loadExample('createGame')"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 p-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          Create Game
+        </button>
+
+        <button
+          (click)="loadExample('recordHit')"
+          class="bg-indigo-700 hover:bg-indigo-600 text-gray-200 border-4 border-indigo-500 p-2 transition-transform hover:-translate-y-0.5 active:translate-y-0.5">
+          Record Hit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
