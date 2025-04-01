@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'https://voidtalk.de/B7_LF8/sql.php'
+  apiUrl: 'https://voidtalk.com/B7_LF8/sql.php'
 };
