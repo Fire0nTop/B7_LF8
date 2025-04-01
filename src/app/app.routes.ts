@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {LandigPageComponent} from '@components/pages/landig-page/landig-page.component';
 import {StartConnectionComponent} from '@components/connection/start-connection/start-connection.component';
+import {GameComponent} from '@components/game/game.component';
 
 
 export const routes: Routes = [
