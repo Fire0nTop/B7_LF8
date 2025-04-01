@@ -1,0 +1,22 @@
+<div class="h-full p-2">
+  <div class="flex-col h-full text-foreground">
+    <div class="flex gap-2 border border-border rounded p-2 ">
+      @if (!left()) {
+        <p>X</p>
+      }
+      <div>
+        <p class="underline text-sm">USERNAME</p>
+        <p class="text-xs">uuid</p>
+      </div>
+      @if (left()) {
+        <p>X</p>
+      }
+    </div>
+    <div class="flex-col gap-2 border border-border rounded p-2">
+      <p>Boat 1</p>
+      <p>Boat 2</p>
+      <p>Boat 3</p>
+      <p>Boat 4</p>
+    </div>
+  </div>
+</div>

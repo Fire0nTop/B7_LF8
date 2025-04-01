@@ -1,6 +1,4 @@
-// src/app/models/index.ts
-
-// Basisklassen
+export * from './connection/index'
 export * from './Schiff';
 export * from './SchiffPosition';
 export * from './Spiel';
