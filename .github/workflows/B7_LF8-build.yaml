@@ -14,7 +14,7 @@ on:
         type: string
 
 env:
-  DEPLOYMENT_FOLDER: deployment
+  DEPLOYMENT_FOLDER: dist/b7-lf8
 
 jobs:
 # Please do not rename this job
