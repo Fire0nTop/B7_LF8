@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {PeerService} from '../../../services/peer-service/peer-service.service';
+import {PeerService} from '@services/peer-service/peer-service.service';
 
 export interface Message {
   text: string;
