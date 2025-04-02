@@ -1,14 +1,12 @@
 import {Injectable} from '@angular/core';
 import {PeerService} from '../peer-service/peer-service.service';
-import {Attack} from '@models/connection';
-import {AttackAnswer} from '@models/index';
-import {AttackResult} from '@models/index';
+import {Attack, Game, AttackAnswer, AttackResult} from '@models/index';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConnectionService {
-  
+
   constructor(private peerService: PeerService) {
     this.listenForMessages()
   }
