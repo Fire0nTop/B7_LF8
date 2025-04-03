@@ -5,18 +5,18 @@
 
     <div class="pixel-display">
       <p class="pixel-text">DEiNE NAME</p>
-      <p class="pixel-id">{{gameService.currentPlayerName}}</p>
+      <p class="pixel-id">{{ connectionService.otherUsername() }}</p>
     </div>
 
     <div class="pixel-display">
       <p class="pixel-text">DEINE ID:</p>
-      <p class="pixel-id">{{ peerService.peerId() }}</p>
+      <p class="pixel-id">{{ connectionService.peerId() }}</p>
     </div>
 
-    @if (this.peerService.isConnected()) {
+    @if (this.connectionService.isConnected()) {
       <div class="pixel-status connected">
         <p class="pixel-text">VERBUNDEN MIT:</p>
-        <p class="pixel-peer-id">{{ this.peerService.getConnectedPeerId() }}</p>
+        <p class="pixel-peer-id">{{ this.connectionService.connectedPeerId() }}</p>
       </div>
     } @else {
       <div class="pixel-status disconnected">
@@ -24,10 +24,10 @@
       </div>
     }
 
-    @if (peerService.connectionError()) {
+    @if (connectionService.connectionError()) {
       <div class="pixel-error">
         <p class="pixel-text">FEHLER:</p>
-        <p class="pixel-error-message">{{ peerService.connectionError() }}</p>
+        <p class="pixel-error-message">{{ connectionService.connectionError() }}</p>
       </div>
     }
 
@@ -36,21 +36,21 @@
         class="pixel-input"
         #peerIdInput
         placeholder="GEGNER-ID EINGEBEN"
-        [disabled]="peerService.isConnected()"
+        [disabled]="connectionService.isConnected()"
       >
 
       <div class="pixel-buttons">
         <button
           class="pixel-button connect"
           (click)="connect(peerIdInput.value)"
-          [disabled]="peerService.isConnected() || !peerIdInput.value"
+          [disabled]="connectionService.isConnected() || !peerIdInput.value"
         >
           VERBINDEN
         </button>
         <button
           class="pixel-button disconnect"
           (click)="disconnect()"
-          [disabled]="!peerService.isConnected()"
+          [disabled]="!connectionService.isConnected()"
         >
           TRENNEN
         </button>

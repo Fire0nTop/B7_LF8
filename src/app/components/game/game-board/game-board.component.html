@@ -1,15 +1,15 @@
 <div class="h-svh w-full bg-background p-4 flex justify-center content-center">
   <div class="grid aspect-square max-w-min max-h-min group"
-       [style.gridTemplateRows]="'repeat(' + (board.board.length + 1) + ', 1fr)'"
-       [style.gridTemplateColumns]="'repeat(' + (board.board[0].length + 1) + ', 1fr)'"
+       [style.gridTemplateRows]="'repeat(' + (board.board.getValue().length + 1) + ', 1fr)'"
+       [style.gridTemplateColumns]="'repeat(' + (board.board.getValue()[0].length + 1) + ', 1fr)'"
   >
     <div></div>
 
-    @for (row of this.board.board; track row; let rowIndex = $index) {
+    @for (row of this.board.board.getValue(); track row; let rowIndex = $index) {
       <div class="flex justify-center items-end text-foreground p-2">{{ String.fromCharCode(65 + rowIndex) }}</div>
     }
 
-    @for (row of this.board.board; track row; let rowIndex = $index) {
+    @for (row of this.board.board.getValue(); track row; let rowIndex = $index) {
       <div class="flex justify-end items-center text-foreground p-4">{{ rowIndex }}</div>
 
       @for (cell of row; track cell) {

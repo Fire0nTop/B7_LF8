@@ -18,7 +18,7 @@ export class LandigPageComponent {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.gameService.setPlayerName(form.value.username);
+      //this.gameService.setPlayerName(form.value.username); TODO: fix this
       this.router.navigate(['/start-connection']); // Korrigierte Navigation
     }
   }

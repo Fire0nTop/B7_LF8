@@ -1,5 +1,5 @@
 export * from './attack'
-export * from './attack-answer'
+export * from './attack-response'
 export * from './attack-result'
 export * from './message'
 export * from './game'

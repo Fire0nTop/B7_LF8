@@ -15,7 +15,7 @@ export class PeerService {
   public peerId = signal<string>('');
   public isConnected = signal(false);
   public connectionError = signal<string | null>(null);
-  private connectedPeerId = signal<string | null>(null);
+  public connectedPeerId = signal<string | null>(null);
 
   // Observables
   private dataReceived$ = new Subject<any>();
@@ -48,10 +48,6 @@ export class PeerService {
 
   public disconnect(): void {
     this.cleanupExistingConnection();
-  }
-
-  public getConnectedPeerId(): string | null {
-    return this.connectedPeerId();
   }
 
   private initializePeer(): void {

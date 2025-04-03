@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {StartConnectionComponent} from '@components/connection/start-connection/start-connection.component';
-import {GameComponent} from '@components/game/game.component';
-import {PhpConnectionComponent} from '@components/connection/php-connection/php-connection.component';
 import {SqlTesterComponent} from '@components/pages/sql-tester/sql-tester.component';
 import {LandigPageComponent} from '@components/pages/landig-page/landig-page.component';
 

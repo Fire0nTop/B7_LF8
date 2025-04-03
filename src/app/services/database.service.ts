@@ -1,11 +1,13 @@
 import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { Schiff, SchiffPosition, Spiel, Zug, Spieler } from '../models/index';
+import { Ship, SchiffPosition, Spiel, Zug, Spieler } from '../models/index';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MapperService } from '@services/mapper-service/mapper.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class DatabaseService {
   private readonly PHP_ENDPOINT = `${environment.apiUrl}${environment.dbUrl}`;
 
@@ -28,27 +30,27 @@ export class DatabaseService {
   }
 
   // Schiff-Methoden
-  getAllSchiffe(): Observable<Schiff[]> {
+  getAllSchiffe(): Observable<Ship[]> {
     return this.executeQuery('SELECT * FROM schiff;').pipe(
       map((response: any[]) => response.map(this.mapper.mapToSchiff))
     );
   }
 
-  getSchiffById(id: number): Observable<Schiff> {
+  getSchiffById(id: number): Observable<Ship> {
     return this.executeQuery(`SELECT * FROM schiff WHERE schiff_id = ${id}`).pipe(
       map(response => this.mapper.mapToSchiff(response[0]))
     );
   }
 
-  createSchiff(schiff: Schiff): Observable<Schiff> {
+  createSchiff(schiff: Ship): Observable<Ship> {
     const query = `
       INSERT INTO schiff
         (schiff_name, horizontal_groesse, vertikal_groesse, schiff_anzahl)
       VALUES (
-        '${schiff.schiffName}',
-        ${schiff.horizontalGroesse},
-        ${schiff.vertikalGroesse},
-        ${schiff.schiffAnzahl}
+        '${schiff.shipName}',
+        ${schiff.horizontalSize},
+        ${schiff.verticalSize},
+        ${schiff.shipCount}
       ) RETURNING *;`;
 
     return this.executeQuery(query).pipe(

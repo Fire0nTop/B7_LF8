@@ -1,4 +1,3 @@
-import {Schiff} from '@models/Schiff';
 
 export class Spiel {
   spielId: number;

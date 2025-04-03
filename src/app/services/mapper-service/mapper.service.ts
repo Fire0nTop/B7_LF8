@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Schiff} from '@models/Schiff';
+import {Ship} from '@models/ship';
 import {Spiel} from '@models/Spiel';
 import {SchiffPosition} from '@models/SchiffPosition';
 import {Zug} from '@models/Zug';
@@ -12,13 +12,13 @@ export class MapperService {
 
   constructor() { }
 
-  mapToSchiff(data: any): Schiff {
+  mapToSchiff(data: any): Ship {
     return {
-      schiffId: data.schiff_id,
-      schiffName: data.schiff_name,
-      horizontalGroesse: data.horizontal_groesse,
-      vertikalGroesse: data.vertikal_groesse,
-      schiffAnzahl: data.schiff_anzahl,
+      shipId: data.schiff_id,
+      shipName: data.schiff_name,
+      horizontalSize: data.horizontal_groesse,
+      verticalSize: data.vertikal_groesse,
+      shipCount: data.schiff_anzahl,
     };
   }
 

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DatabaseService } from './database.service';
-import { Schiff, SchiffPosition, Spiel, Zug, Spieler } from '../models';
+import { Ship, SchiffPosition, Spiel, Zug, Spieler } from '../models';
 
 describe('DatabaseService', () => {
   let service: DatabaseService;
@@ -39,7 +39,7 @@ describe('DatabaseService', () => {
     });
 
     it('should create Schiff', () => {
-      const testSchiff = new Schiff(
+      const testSchiff = new Ship(
         1, 'TestSchiff', 5, 3, 2
       );
 

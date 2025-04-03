@@ -1,5 +1,5 @@
 import {AttackResult} from '.';
 
-export interface AttackAnswer {
+export interface AttackResponse {
   attackResult: AttackResult,
 }
