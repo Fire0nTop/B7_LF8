@@ -1,5 +1,5 @@
 export * from './connection/index'
-export * from './Schiff';
+export * from './ship';
 export * from './SchiffPosition';
 export * from './Spiel';
 export * from './Spieler';

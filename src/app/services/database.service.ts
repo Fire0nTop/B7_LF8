@@ -1,7 +1,7 @@
 import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Schiff, SchiffPosition, Spiel, Zug, Spieler } from '../models/index';
+import { Ship, SchiffPosition, Spiel, Zug, Spieler } from '../models/index';
 
 @Injectable({
   providedIn: 'root'
@@ -52,15 +52,15 @@ export class DatabaseService {
     return this.executeQuery(`SELECT * FROM schiff WHERE schiff_id = ${id};`);
   }
 
-  createSchiff(schiff: Schiff): Observable<any> {
+  createSchiff(schiff: Ship): Observable<any> {
     const query = `
       INSERT INTO schiff
         (schiff_name, horizontal_groesse, vertikal_groesse, schiff_anzahl)
       VALUES (
-                 '${schiff.schiffName}',
-                 ${schiff.horizontalGroesse},
-                 ${schiff.vertikalGroesse},
-                 ${schiff.schiffAnzahl}
+                 '${schiff.shipName}',
+                 ${schiff.horizontalSize},
+                 ${schiff.verticalSize},
+                 ${schiff.shipCount}
              );`;
     return this.executeQuery(query);
   }

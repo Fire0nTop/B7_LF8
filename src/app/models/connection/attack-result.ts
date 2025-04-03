@@ -1,5 +1,5 @@
 export enum AttackResult {
-  miss = 0,
-  hit = 1,
-  sunk = 2,
+  Miss = 0,
+  Hit = 1,
+  Sunk = 2,
 }

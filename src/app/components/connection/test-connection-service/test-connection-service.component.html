@@ -1,0 +1,28 @@
+<div class="flex flex-col">
+
+  <p>Your Peer ID: {{ connectionService.peerId() }}</p>
+  <p>Other Peer ID:{{connectionService.connectedPeerId()}}</p>
+  <p>Is Connected: {{connectionService.isConnected()}}</p>
+  <p>Error: {{connectionService.connectionError()}}</p>
+
+  <input type="text" [(ngModel)]="peerId" placeholder="Enter Peer ID" />
+  <button (click)="connectToPeer()">Connect</button>
+  <button (click)="disconnect()">Disconnect</button>
+
+  @if (connectionService.isConnected()) {
+
+    <p>Username: {{connectionService.username()}}</p>
+    <p>Other Username {{connectionService.otherUsername()}}</p>
+    <input type="text" [(ngModel)]="username" placeholder="Enter username" />
+    <button (click)="setUsername()">Set Username</button>
+    <button (click)="sendUsername()">Send Username</button>
+
+    <p>Incoming Attack {{receivedAttack()}}</p>
+    <p>Attack Result {{receivedAttackResult()}}</p>
+    <input type="number" [(ngModel)]="attack.x" placeholder="Enter X" />
+    <input type="number" [(ngModel)]="attack.y" placeholder="Enter Y" />
+    <button (click)="sendAttack()">Send Username</button>
+
+  }
+
+</div>
