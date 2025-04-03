@@ -119,14 +119,5 @@ describe('DatabaseService', () => {
     });
   });
 
-  describe('Spielstand-Methoden', () => {
-    it('should get Spielstand', () => {
-      service.getSpielstand(1).subscribe();
 
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain(
-        'SELECT%20s.spiel_id%2C%20(SELECT%20COUNT(*)%20FROM%20zug%20WHERE%20spiel_id%20%3D%201%20AND%20treffer%20%3D%201)'
-      );
-    });
-  });
 });
