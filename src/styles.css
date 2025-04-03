@@ -53,3 +53,30 @@
   --ring: 240 4.9% 83.9%;
   color-scheme: dark;
 }
+/* Füge diese Styles unter den bestehenden dark-Klassen hinzu */
+.pixel-mode {
+  --background: 240 6% 10%;
+  --foreground: 0 0% 98%;
+  --card: 240 6% 10%;
+  --card-foreground: 146 100% 50%;
+  --primary: 146 100% 50%;
+  --primary-foreground: 240 6% 10%;
+  --secondary: 240 5% 26%;
+  --secondary-foreground: 0 0% 98%;
+  --border: 240 5% 26%;
+  --input: 240 5% 26%;
+  --ring: 146 100% 50%;
+  --radius: 0;
+  --pixel-border: 3px;
+}
+
+/* Pixel Art spezifische Animationen */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes text-glitch {
+  0% { text-shadow: 2px 0 0 #ff00c1, -2px 0 0 #00fff9; }
+  100% { text-shadow: 5px 0 0 #ff00c1, -5px 0 0 #00fff9; }
+}
