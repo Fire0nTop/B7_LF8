@@ -1,0 +1,48 @@
+<div>
+  <h3>Test Database Service</h3>
+
+  <div>
+    <button (click)="getAllSchiffe()">Get All Ships</button>
+    <div *ngIf="allShips">{{ allShips | json }}</div>
+  </div>
+
+  <div>
+    <input [(ngModel)]="shipId" placeholder="Ship ID" type="number" />
+    <button (click)="getSchiffById()">Get Ship By ID</button>
+    <div *ngIf="ship">{{ ship | json }}</div>
+  </div>
+
+  <div>
+    <input [(ngModel)]="shipName" placeholder="Ship Name" type="text" />
+    <input [(ngModel)]="horizontalSize" placeholder="Horizontal Size" type="number" />
+    <input [(ngModel)]="verticalSize" placeholder="Vertical Size" type="number" />
+    <input [(ngModel)]="shipCount" placeholder="Ship Count" type="number" />
+    <button (click)="createSchiff()">Create Ship</button>
+    <div *ngIf="createdShip">{{ createdShip | json }}</div>
+  </div>
+
+  <div>
+    <button (click)="createSpiel()">Create Game</button>
+    <div *ngIf="spiel">{{ spiel | json }}</div>
+  </div>
+
+  <div>
+    <button (click)="getAktivesSpiel()">Get Active Game</button>
+    <div *ngIf="aktivesSpiel">{{ aktivesSpiel | json }}</div>
+  </div>
+
+  <div>
+    <input [(ngModel)]="spielId" placeholder="Game ID" type="number" />
+    <button (click)="getSchiffPositionen()">Get Ship Positions</button>
+    <div *ngIf="schiffPositionen">{{ schiffPositionen | json }}</div>
+  </div>
+
+  <div>
+    <input [(ngModel)]="positionSchiffId" placeholder="Ship ID" type="number" />
+    <input [(ngModel)]="positionSpielId" placeholder="Game ID" type="number" />
+    <input [(ngModel)]="positionX" placeholder="Position X" type="number" />
+    <input [(ngModel)]="positionY" placeholder="Position Y" type="number" />
+    <button (click)="setzeSchiffPosition()">Set Ship Position</button>
+    <div *ngIf="shipPosition">{{ shipPosition | json }}</div>
+  </div>
+</div>
