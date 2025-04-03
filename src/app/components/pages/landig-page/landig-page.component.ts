@@ -22,4 +22,8 @@ export class LandigPageComponent {
       this.router.navigate(['/start-connection']); // Korrigierte Navigation
     }
   }
+
+  onSubmitSQL() {
+    this.router.navigate(['/sql-tester']); // Korrigierte Navigation
+  }
 }

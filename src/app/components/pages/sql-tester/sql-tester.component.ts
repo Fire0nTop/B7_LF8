@@ -1,122 +1,99 @@
-// sql-tester.component.ts
 import { Component } from '@angular/core';
-import { DatabaseService } from '../../../services/database.service'; // Pfad anpassen
+import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe, NgIf} from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-sql-tester',
   templateUrl: './sql-tester.component.html',
+  imports: [
+    HttpClientModule,
+    NgIf,
+    ReactiveFormsModule,
+    FormsModule,
+    JsonPipe
+  ],
   styleUrls: ['./sql-tester.component.css']
 })
 export class SqlTesterComponent {
-  currentQuery: string = '';
-  queryResult: string = 'Results will appear here...';
+  queryForm: FormGroup;
+  response: string = 'Results will appear here...';
+  error: string = '';
   isLoading: boolean = false;
+  readonly PHP_ENDPOINT = environment.apiUrl + environment.dbUrl;
 
-  constructor(private dbService: DatabaseService) {}
-
-  executeQuery() {
-    if (!this.currentQuery.trim()) return;
-
-    this.isLoading = true;
-    this.queryResult = "Executing query...";
-
-    this.dbService.executeQuery(this.currentQuery).subscribe({
-      next: (data) => this.handleQueryResult(data),
-      error: (error) => this.handleError(error)
+  constructor(private fb: FormBuilder, private http: HttpClient) {
+    this.queryForm = this.fb.group({
+      query: ['']
     });
   }
 
-  private handleQueryResult(data: any) {
-    if (data.error) {
-      this.queryResult = `Error: ${data.error}`;
-    } else {
-      this.formatResults(Array.isArray(data) ? data : [data]);
-    }
-    this.isLoading = false;
+  onSubmit() {
+    this.isLoading = true;
+    this.error = '';
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+
+    const body = new URLSearchParams();
+    body.set('query', this.queryForm.value.query);
+
+    this.http.post(this.PHP_ENDPOINT, body.toString(), { headers })
+      .subscribe({
+        next: (res: any) => {
+          this.isLoading = false;
+          if (res.error) {
+            this.error = res.error;
+          } else {
+            this.response = res;
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          console.error('HTTP Error:', err);
+          this.error = err.message || 'An unknown error occurred';
+        }
+      });
   }
 
-  private handleError(error: any) {
-    this.queryResult = `Error: ${error.message || 'Unknown error'}`;
-    this.isLoading = false;
-  }
+
 
   clearQuery() {
-    this.currentQuery = '';
-    this.queryResult = 'Results will appear here...';
+    this.queryForm.reset({ query: '' });
+    this.response = 'Results will appear here...';
+    this.error = '';
   }
 
-  // formatResults Methode bleibt gleich wie in Ihrer Vorlage
-  // clearQuery Methode bleibt gleich wie in Ihrer Vorlage
+  loadExample(exampleType: string) {
+    let query = '';
 
-  loadExample(type: string) {
-    const examples: {[key: string]: string} = {
-      getAll: 'SELECT * FROM parkplatz;',
-      getSingle: 'SELECT * FROM parkplatz WHERE key_id = 1;',
-      updateExample: `UPDATE parkplatz SET
-        reihe = 2,
-        parkplatz_nummer = 5,
-        status = 'frei'
-        WHERE key_id = 1;`,
-      insertExample: `INSERT INTO parkplatz
-                        (reihe, parkplatz_nummer, status)
-                      VALUES (3, 12, 'besetzt')`,
-      deleteExample: 'DELETE FROM parkplatz WHERE key_id = 1;'
-    };
-
-    this.currentQuery = examples[type] || '';
-  }
-
-  private formatResults(data: any[]) {
-    if (!data || data.length === 0) {
-      this.queryResult = "Query executed successfully. No results returned.";
-      return;
+    switch (exampleType) {
+      case 'getShips':
+        query = 'SELECT * FROM schiff;';
+        break;
+      case 'getGames':
+        query = 'SELECT * FROM spiel WHERE beendet = 0 ORDER BY spiel_id DESC;';
+        break;
+      case 'getHits':
+        query = 'SELECT * FROM zug WHERE spiel_id = 1 AND treffer = 1 ORDER BY runde;';
+        break;
+      case 'createShip':
+        query = `INSERT INTO schiff (schiff_name, horizontal_groesse, vertikal_groesse, schiff_anzahl)
+VALUES ('Kreuzer', 3, 1, 2);`;
+        break;
+      case 'createGame':
+        query = 'INSERT INTO spiel (spiel_id, startzeit) VALUES (1, CURRENT_TIMESTAMP);';
+        break;
+      case 'recordHit':
+        query = `INSERT INTO zug (kordinate_x, kordinate_y, treffer, runde, spieler, spiel_id)
+VALUES (5, 3, 1, 1, 1, 1);`;
+        break;
+      default:
+        query = '';
     }
 
-    // Get all column names from first row
-    const columns = Object.keys(data[0]);
-
-    // Calculate maximum width for each column
-    const columnWidths: {[key: string]: number} = {};
-
-    columns.forEach(col => {
-      // Start with column name length as minimum width
-      let maxWidth = col.length;
-
-      // Check each row's value for this column
-      data.forEach(row => {
-        const value = row[col] !== null && row[col] !== undefined
-          ? String(row[col])
-          : 'NULL';
-        maxWidth = Math.max(maxWidth, value.length);
-      });
-
-      columnWidths[col] = maxWidth;
-    });
-
-    // Build header row
-    let output = '';
-    columns.forEach(col => {
-      output += col.padEnd(columnWidths[col]) + ' | ';
-    });
-    output += '\n';
-
-    // Build separator row
-    columns.forEach(col => {
-      output += '-'.repeat(columnWidths[col]) + '-+-';
-    });
-    output += '\n';
-
-    // Build data rows
-    data.forEach(row => {
-      columns.forEach(col => {
-        const value = row[col] !== null && row[col] !== undefined
-          ? String(row[col])
-          : 'NULL';
-        output += value.padEnd(columnWidths[col]) + ' | ';
-      });
-      output += '\n';
-    });
-
-    this.queryResult = output;
+    this.queryForm.get('query')?.setValue(query);
   }
 }
