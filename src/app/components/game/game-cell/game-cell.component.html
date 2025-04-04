@@ -1,8 +1,16 @@
 <button (click)="onPress()" class="h-full aspect-square border-2 border-border group-hover:border-foreground duration-300">
   <div class="h-full w-full opacity-30 hover:bg-primary">
-    <p>{{X + "-" + Y}}</p>
-    <p>{{CellStatus[status()]}}</p>
-    <p>{{content()?.shipName}}</p>
-    <p>{{placedShipId()}}</p>
+    @if (true) {
+      <p>{{X + "-" + Y}}</p>
+      <p>{{CellStatus[status()]}}</p>
+      <p>{{content()?.shipName}}</p>
+      <p>{{placedShipId()}}</p>
+    } @else {
+      <div class="relative w-8 h-8 overflow-visible">
+        <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Water"/>
+        <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Boat"/>
+        <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Hit marker"/>
+      </div>
+    }
   </div>
 </button>

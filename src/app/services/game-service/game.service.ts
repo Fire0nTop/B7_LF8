@@ -18,6 +18,8 @@ export class GameService {
   public readonly selectedShip = signal<Ship | null>(null)
   public readonly selectedRotation = signal<Rotation>(Rotation.horizontal)
 
+  public readonly isAttacking = signal<boolean>(false)
+
   constructor(public databaseService: DatabaseService) {
     this.board = new Board(Board.BOARD_SIZE,Board.BOARD_SIZE);
     databaseService.getAllShips().subscribe(value => this.ships.set(value))
@@ -55,5 +57,6 @@ export class GameService {
     if (this.board.getCellStatus(attack.x, attack.y) === CellStatus.occupied) {
       this.board.setCellStatus(attack.x, attack.y,CellStatus.destroyed);
     }
+    console.log("getting cell at", attack.x, attack.y, "=>", this.board.board.getValue()[attack.x][attack.y]);
   }
 }

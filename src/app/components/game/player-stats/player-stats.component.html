@@ -5,7 +5,7 @@
         <p>TURN DISPLAY</p>
       }
       <div>
-        <p class="underline text-sm">{{getUsername()}}</p>
+        <p class="underline text-sm">{{ getUsername() }}</p>
         <!-- <p class="text-xs w-max text-muted">{{ getUuid() }}</p> -->
       </div>
       @if (left()) {
@@ -15,16 +15,24 @@
     <div class="flex flex-col gap-2 border border-border rounded p-2 justify-center">
       @if (!other()) {
         @for (ship of gameService.ships(); track ship.shipId) {
-          <button (click)="setSelectedShip(ship)">
+          <button (click)="setSelectedShip(ship)" [disabled]="false">
+            <!--TODO: count and disable-->
             <div>
-              <p class="w-max">{{ship.shipName}} {{ship.shipCount}}</p>
+              <p class="w-max">{{ ship.shipName }} {{ ship.shipCount }}</p>
               <!--TODO: image of ship-->
             </div>
           </button>
         }
         <button (click)="switchRotation()">Switch Rotation</button>
+        <button (click)="switchBoard()">Switch Board</button>
+
       } @else {
-        <div>OTHER DATA</div>
+        @for (ship of gameService.ships(); track ship.shipId) {
+          <div>
+            <p class="w-max">{{ ship.shipName }} {{ ship.shipCount }}</p>
+            <!--TODO: image of ship and - destroyed ships count -->
+          </div>
+        }
       }
     </div>
   </div>

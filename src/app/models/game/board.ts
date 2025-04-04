@@ -3,6 +3,7 @@ import {Ship} from '@models/ship';
 import {Rotation} from '@models/game/rotation';
 import {CellStatus} from '@models/game/cellSatus';
 import {BehaviorSubject, map} from 'rxjs';
+import {Attack} from '@models/connection';
 
 export class Board {
 
@@ -54,6 +55,7 @@ export class Board {
     }
 
     this.board.next(updatedBoard);
+    console.log("placed ship at", x, y, "with placedShipId", placedShipId,this.board.getValue());
     return true;
   }
 
@@ -83,5 +85,37 @@ export class Board {
       }
     }
     return true;
+  }
+
+  public getAllCellsOfPlaceId(placedShipId:number): Cell[] {
+    //TODO : fix this return null somehow
+    const board = this.board.getValue();
+    const cells:Cell[] = []
+
+    for (let x = 0; x < this.sizeX; x++) {
+      for (let y = 0; y < this.sizeY; y++) {
+        const cell = board[x][y];
+        if (cell.placedShipId === placedShipId) {
+          cells.push(cell);
+        }
+      }
+    }
+    return cells;
+  }
+
+  public getAllPositionsOfPlaceId(placedShipId:number): Attack[] {
+    //TODO : fix this return null somehow
+    const board = this.board.getValue();
+    const positions:Attack[] = []
+
+    for (let x = 0; x < this.sizeX; x++) {
+      for (let y = 0; y < this.sizeY; y++) {
+        const cell = board[x][y];
+        if (cell.placedShipId === placedShipId) {
+          positions.push({x: x, y: y});
+        }
+      }
+    }
+    return positions;
   }
 }

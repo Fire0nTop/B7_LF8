@@ -28,7 +28,6 @@ export class GameCellComponent implements OnInit {
   }
 
   onPress() {
-    console.log('onPress', this.gameService.selectedShip());
     const ship = this.gameService.selectedShip();
     if (ship) {
       this.gameService.board.placeShip(ship,this.X,this.Y,this.gameService.selectedRotation())

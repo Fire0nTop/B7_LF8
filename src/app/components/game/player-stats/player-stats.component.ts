@@ -39,4 +39,10 @@ export class PlayerStatsComponent {
       return value === Rotation.horizontal ? Rotation.vertical : Rotation.horizontal;
     })
   }
+
+  switchBoard() {
+    this.gameService.isAttacking.update(value => {
+      return !value
+    })
+  }
 }

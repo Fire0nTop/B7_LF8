@@ -13,7 +13,11 @@
       <div class="flex justify-end items-center text-foreground p-4">{{ rowIndex }}</div>
 
       @for (cell of row; track cell; let columIndex = $index) {
-        <app-game-cell [X]="rowIndex" [Y]="columIndex"></app-game-cell>
+        @if (gameService.isAttacking()) {
+          <app-attack-game-cell [X]="rowIndex" [Y]="columIndex"></app-attack-game-cell>
+        } @else {
+          <app-game-cell [X]="rowIndex" [Y]="columIndex"></app-game-cell>
+        }
       }
     }
   </div>

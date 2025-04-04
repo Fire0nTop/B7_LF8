@@ -1,0 +1,8 @@
+<button (click)="onPress()" class="h-full aspect-square border-2 border-border group-hover:border-destructive duration-300">
+  <div class="h-full w-full opacity-30 hover:bg-primary">
+    <p>{{X + "-" + Y}}</p>
+    <p>{{attacked()}}</p>
+    <p>{{result()}}</p>
+    <p>{{destroyedShip()?.shipName}}</p>
+  </div>
+</button>

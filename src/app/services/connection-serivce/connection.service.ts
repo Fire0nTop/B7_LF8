@@ -1,6 +1,6 @@
 import {computed, DestroyRef, inject, Injectable, signal} from '@angular/core';
-import { PeerService } from '../peer-service/peer-service.service';
-import { Attack, Game, AttackResponse, AttackResult } from '@models/index';
+import {PeerService} from '../peer-service/peer-service.service';
+import {Attack, AttackResponse, AttackResult, Game} from '@models/index';
 import {Observable, Subject} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MessageType} from '@models/connection/message-types';
@@ -24,12 +24,12 @@ export class ConnectionService {
     takeUntilDestroyed(this.destroyRef)
   );
 
-  attackResultReceived = new Subject<AttackResult>();
-  public onAttackResultReceived: Observable<AttackResult> = this.attackResultReceived.pipe(
+  attackResultReceived = new Subject<AttackResponse>();
+  public onAttackResultReceived: Observable<AttackResponse> = this.attackResultReceived.pipe(
     takeUntilDestroyed(this.destroyRef)
   );
 
-  constructor(private peerService: PeerService,private gameService: GameService) {
+  constructor(private peerService: PeerService, private gameService: GameService) {
     this.listenForMessages();
   }
 
@@ -43,11 +43,11 @@ export class ConnectionService {
 
   public sendAttack(attack: Attack): Promise<AttackResponse> {
     return new Promise<AttackResponse>((resolve) => {
-      this.peerService.sendData({ type: MessageType.Attack, attack });
+      this.peerService.sendData({type: MessageType.Attack, attack});
 
       const subscription = this.peerService.onDataReceived$.subscribe((data) => {
         if (data.type === MessageType.AttackResponse) {
-          resolve({ attackResult: data.attackResult });
+          resolve({attackResult: data.attackResult, attack: attack, destroyedShip:data.destroyedShip, destroyedShipPositions: data.destroyedShipCells});
           subscription.unsubscribe();
         }
       });
@@ -55,13 +55,13 @@ export class ConnectionService {
   }
 
   public sendGame(game: Game) {
-    this.peerService.sendData({ type: MessageType.Game, game });
+    this.peerService.sendData({type: MessageType.Game, game});
   }
 
   public sendUsername(): Promise<string> {
     let username = this.username();
     return new Promise<string>((resolve) => {
-      this.peerService.sendData({ type: MessageType.Username, username });
+      this.peerService.sendData({type: MessageType.Username, username});
 
       const subscription = this.peerService.onDataReceived$.subscribe((data) => {
         if (data.type === MessageType.UsernameResponse) {
@@ -82,8 +82,8 @@ export class ConnectionService {
           break;
 
         case MessageType.AttackResponse:
-          console.log('received attackResponse', data.attackResult);
-          this.attackResultReceived.next(data.attackResult);
+          console.log('received attackResponse', data);
+          this.attackResultReceived.next(data);
           break;
 
         case MessageType.GameOver:
@@ -119,18 +119,29 @@ export class ConnectionService {
   }
 
   private sendAttackResponse(attack: Attack): void {
-    this.peerService.sendData({ type: MessageType.AttackResponse, attackResult: this.gameService.computeAttack(attack) });
+    const ship = this.gameService.board.board.getValue()[attack.x][attack.y].content
+    const attackResult = this.gameService.computeAttack(attack)
+    const placedShipId = this.gameService.board.board.getValue()[attack.x][attack.y].placedShipId
+    const destroyedShipCells = placedShipId !== null ? this.gameService.board.getAllPositionsOfPlaceId(placedShipId) : null;
+    console.log(destroyedShipCells,placedShipId)
+    this.peerService.sendData({
+      type: MessageType.AttackResponse,
+      attackResult: attackResult,
+      attack: attack,
+      destroyedShip: attackResult === AttackResult.Sunk ? ship : null,
+      destroyedShipPositions: attackResult === AttackResult.Sunk && destroyedShipCells ? destroyedShipCells : null,
+    });
   }
 
   private sendUsernameAnswer() {
-    this.peerService.sendData({ type: MessageType.UsernameResponse, username: this.username() || 'Player' });
+    this.peerService.sendData({type: MessageType.UsernameResponse, username: this.username() || 'Player'});
   }
 
   private sendGameOverResponse() {
-    this.peerService.sendData({ type: MessageType.GameOverResponse });
+    this.peerService.sendData({type: MessageType.GameOverResponse});
   }
 
   private sendGameResponse(game: Game): void {
-    this.peerService.sendData({ type: MessageType.GameResponse, game });
+    this.peerService.sendData({type: MessageType.GameResponse, game});
   }
 }
