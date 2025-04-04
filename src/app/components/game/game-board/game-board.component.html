@@ -12,8 +12,8 @@
     @for (row of this.board.board.getValue(); track row; let rowIndex = $index) {
       <div class="flex justify-end items-center text-foreground p-4">{{ rowIndex }}</div>
 
-      @for (cell of row; track cell) {
-        <app-game-cell></app-game-cell>
+      @for (cell of row; track cell; let columIndex = $index) {
+        <app-game-cell [X]="rowIndex" [Y]="columIndex"></app-game-cell>
       }
     }
   </div>

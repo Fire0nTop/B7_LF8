@@ -1,3 +1,8 @@
-<div class="h-full aspect-square border-2 border-border group-hover:border-foreground duration-300 ">
-  <div class="h-full w-full opacity-30 hover:bg-primary"></div>
-</div>
+<button (click)="onPress()" class="h-full aspect-square border-2 border-border group-hover:border-foreground duration-300">
+  <div class="h-full w-full opacity-30 hover:bg-primary">
+    <p>{{X + "-" + Y}}</p>
+    <p>{{CellStatus[status()]}}</p>
+    <p>{{content()?.shipName}}</p>
+    <p>{{placedShipId()}}</p>
+  </div>
+</button>

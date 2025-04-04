@@ -13,8 +13,7 @@ import { environment } from '../../../../environments/environment';
     ReactiveFormsModule,
     FormsModule,
     JsonPipe
-  ],
-  styleUrls: ['./sql-tester.component.css']
+  ]
 })
 export class SqlTesterComponent {
   queryForm: FormGroup;
