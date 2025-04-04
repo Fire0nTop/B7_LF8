@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {DatabaseService} from '@services/database.service';
+import {Component, signal} from '@angular/core';
+import {DatabaseService} from '@services/database-service/database.service';
 import {Ship} from '@models/ship';
 import {Spiel} from '@models/Spiel';
 import {SchiffPosition} from '@models/SchiffPosition';
@@ -10,21 +10,19 @@ import {Spieler} from '@models/Spieler';
 
 @Component({
   selector: 'app-test-database-service',
-  imports: [
-    JsonPipe,
-    FormsModule,
-    NgIf
-  ],
+  imports: [JsonPipe, FormsModule, NgIf],
   templateUrl: './test-database-service.component.html'
 })
 export class TestDatabaseServiceComponent {
-  allShips: Ship[] | null = null;
-  ship: Ship | null = null;
-  spiel: Spiel | null = null;
-  aktivesSpiel: Spiel | null = null;
-  schiffPositionen: SchiffPosition[] | null = null;
-  zug: Zug | null = null;
-  spieler: Spieler | null = null;
+  allShips = signal<Ship[] | null>(null);
+  ship = signal<Ship | null>(null);
+  createdShip = signal<Ship | null>(null); // Newly added
+  spiel = signal<Spiel | null>(null);
+  aktivesSpiel = signal<Spiel | null>(null);
+  schiffPositionen = signal<SchiffPosition[] | null>(null);
+  shipPosition = signal<SchiffPosition | null>(null); // Newly added
+  zug = signal<Zug | null>(null);
+  spieler = signal<Spieler | null>(null);
 
   // Input Variablen
   shipId: number | null = null;
@@ -40,15 +38,22 @@ export class TestDatabaseServiceComponent {
   runde: number | null = null;
   spielerId: number | null = null;
 
-  constructor(private databaseService: DatabaseService) {}
+  // Schiff-Position setzen
+  positionSchiffId: number | null = null;
+  positionSpielId: number | null = null;
+  positionX: number | null = null;
+  positionY: number | null = null;
+
+  constructor(private databaseService: DatabaseService) {
+  }
 
   getAllSchiffe() {
-    this.databaseService.getAllSchiffe().subscribe(data => this.allShips = data);
+    this.databaseService.getAllShips().subscribe(data => this.allShips.set(data));
   }
 
   getSchiffById() {
     if (this.shipId !== null) {
-      this.databaseService.getSchiffById(this.shipId).subscribe(data => this.ship = data);
+      this.databaseService.getShipById(this.shipId).subscribe(data => this.ship.set(data));
     }
   }
 
@@ -60,28 +65,28 @@ export class TestDatabaseServiceComponent {
         verticalSize: this.verticalSize,
         shipCount: this.shipCount
       } as Ship;
-      this.databaseService.createSchiff(newShip).subscribe(data => this.ship = data);
+      this.databaseService.createShip(newShip).subscribe(data => this.createdShip.set(data));
     }
   }
 
   createSpiel() {
-    this.databaseService.createSpiel({} as Spiel).subscribe(data => this.spiel = data);
+    this.databaseService.createGame({} as Spiel).subscribe(data => this.spiel.set(data));
   }
 
   getAktivesSpiel() {
-    this.databaseService.getAktivesSpiel().subscribe(data => this.aktivesSpiel = data);
+    this.databaseService.getActiveGame().subscribe(data => this.aktivesSpiel.set(data));
   }
 
   getSchiffPositionen() {
     if (this.spielId !== null) {
-      this.databaseService.getSchiffPositionen(this.spielId).subscribe(data => this.schiffPositionen = data);
+      this.databaseService.getShipPositionsByGameId(this.spielId).subscribe(data => this.schiffPositionen.set(data));
     }
   }
 
   registriereSpieler() {
     if (this.spielerName) {
-      const spieler: Spieler = { userName: this.spielerName } as Spieler;
-      this.databaseService.registriereSpieler(spieler).subscribe(data => this.spieler = data);
+      const spieler: Spieler = {userName: this.spielerName} as Spieler;
+      this.databaseService.registerPlayer(spieler).subscribe(data => this.spieler.set(data));
     }
   }
 
@@ -95,7 +100,20 @@ export class TestDatabaseServiceComponent {
         spielerId: this.spielerId,
         spielId: this.spielId
       } as Zug;
-      this.databaseService.speichereZug(zug).subscribe(data => this.zug = data);
+      this.databaseService.saveMove(zug).subscribe(data => this.zug.set(data));
+    }
+  }
+
+  setzeSchiffPosition() {
+    if (this.positionSchiffId !== null && this.positionSpielId !== null && this.positionX !== null && this.positionY !== null) {
+      const position: SchiffPosition = {
+        schiffId: this.positionSchiffId,
+        spielId: this.positionSpielId,
+        positionX: this.positionX,
+        positionY: this.positionY
+      } as SchiffPosition;
+
+      this.databaseService.setShipPosition(position).subscribe(data => this.shipPosition.set(data));
     }
   }
 }

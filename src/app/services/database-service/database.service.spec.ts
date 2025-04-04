@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DatabaseService } from './database.service';
-import { Ship, SchiffPosition, Spiel, Zug, Spieler } from '../models';
+import { Ship, SchiffPosition, Spiel, Zug, Spieler } from '@models/index';
 
 describe('DatabaseService', () => {
   let service: DatabaseService;
@@ -31,7 +31,7 @@ describe('DatabaseService', () => {
 
   describe('Schiff-Methoden', () => {
     it('should get all Schiffe', () => {
-      service.getAllSchiffe().subscribe();
+      service.getAllShips().subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.method).toBe('POST');
@@ -43,7 +43,7 @@ describe('DatabaseService', () => {
         1, 'TestSchiff', 5, 3, 2
       );
 
-      service.createSchiff(testSchiff).subscribe();
+      service.createShip(testSchiff).subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain(
@@ -55,14 +55,14 @@ describe('DatabaseService', () => {
   describe('Spiel-Methoden', () => {
     it('should create new Spiel', () => {
       const testSpiel = new Spiel(1);
-      service.createSpiel(testSpiel).subscribe();
+      service.createGame(testSpiel).subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain('INSERT%20INTO%20spiel%20(spiel_id)%20VALUES%20(1)');
     });
 
     it('should get aktives Spiel', () => {
-      service.getAktivesSpiel().subscribe();
+      service.getActiveGame().subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain(
@@ -77,7 +77,7 @@ describe('DatabaseService', () => {
         1, 1, 1, 10, 15, false
       );
 
-      service.setzeSchiffPosition(position).subscribe();
+      service.setShipPosition(position).subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain(
@@ -86,7 +86,7 @@ describe('DatabaseService', () => {
     });
 
     it('should mark Schiff als zerstört', () => {
-      service.markiereSchiffAlsZerstoert(123).subscribe();
+      service.markShipAsDestroyed(123).subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain(
@@ -98,7 +98,7 @@ describe('DatabaseService', () => {
   describe('Zug-Methoden', () => {
     it('should save Zug', () => {
       const zug = new Zug(5, 5, true, 1, 123, 1);
-      service.speichereZug(zug).subscribe();
+      service.saveMove(zug).subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain(
@@ -110,7 +110,7 @@ describe('DatabaseService', () => {
   describe('Spieler-Methoden', () => {
     it('should registriere Spieler', () => {
       const spieler = new Spieler(1, 'TestUser');
-      service.registriereSpieler(spieler).subscribe();
+      service.registerPlayer(spieler).subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain(

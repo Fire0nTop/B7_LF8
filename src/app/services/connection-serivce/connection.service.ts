@@ -4,6 +4,7 @@ import { Attack, Game, AttackResponse, AttackResult } from '@models/index';
 import {Observable, Subject} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MessageType} from '@models/connection/message-types';
+import {GameService} from '@services/game-service/game.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class ConnectionService {
     takeUntilDestroyed(this.destroyRef)
   );
 
-  constructor(private peerService: PeerService) {
+  constructor(private peerService: PeerService,private gameService: GameService) {
     this.listenForMessages();
   }
 
@@ -118,7 +119,7 @@ export class ConnectionService {
   }
 
   private sendAttackResponse(attack: Attack): void {
-    this.peerService.sendData({ type: MessageType.AttackResponse, attackResult: AttackResult.Miss });
+    this.peerService.sendData({ type: MessageType.AttackResponse, attackResult: this.gameService.computeAttack(attack) });
   }
 
   private sendUsernameAnswer() {

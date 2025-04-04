@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import {GameBoardComponent} from './game-board/game-board.component';
 import {PlayerStatsComponent} from './player-stats/player-stats.component';
+import {
+  TestConnectionServiceComponent
+} from '@components/connection/test-connection-service/test-connection-service.component';
 
 @Component({
   selector: 'app-game',
   imports: [
     GameBoardComponent,
-    PlayerStatsComponent
+    PlayerStatsComponent,
+    TestConnectionServiceComponent
   ],
   templateUrl: './game.component.html'
 })

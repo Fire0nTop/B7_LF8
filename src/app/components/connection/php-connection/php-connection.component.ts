@@ -5,7 +5,7 @@ import {JsonPipe, NgIf} from '@angular/common';
 import {environment} from '../../../../environments/environment';
 
 @Component({
-  selector: 'app-sql-query',
+  selector: 'app-php-connection',
   imports: [
     HttpClientModule, // add this import!
     JsonPipe,
