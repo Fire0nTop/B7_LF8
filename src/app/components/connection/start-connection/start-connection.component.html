@@ -1,60 +1,97 @@
-<!-- peer-connection.component.html -->
-<div class="pixel-container">
-  <div class="pixel-box">
-    <h2 class="pixel-title">NETZWERK KONSOLE</h2>
+<div class="min-h-screen bg-background p-4 flex flex-col gap-4 font-sans">
+  <!-- Battleship Section mit Namenseingabe -->
+  <div class="p-4 border-4 border-border bg-card text-foreground rounded-lg">
+    <h1 class="text-3xl text-center mb-6 uppercase">SCHIFFE VERSENKEN</h1>
 
-    <div class="pixel-display">
-      <p class="pixel-text">DEiNE NAME</p>
-      <p class="pixel-id">{{ connectionService.otherUsername() }}</p>
+    <form
+      (ngSubmit)="onSubmit(authForm); scrollToConnection()"
+      #authForm="ngForm"
+      class="space-y-4"
+    >
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="usernameInput"
+        required
+        placeholder="KAPITÄNSNAME"
+        class="w-full p-2 border-2 border-input bg-card text-foreground rounded"
+        maxlength="12"
+      >
+      <button
+        type="submit"
+        class="w-full p-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded uppercase disabled:opacity-50"
+        [disabled]="!authForm.valid"
+      >
+        Kapitän bestätigen
+      </button>
+    </form>
+  </div>
+
+  <!-- Network Console Section -->
+  <div #connectionSection class="p-4 border-4 border-border bg-card text-foreground rounded-lg">
+    <h2 class="text-2xl text-center mb-6 uppercase">NETZWERK KONSOLE</h2>
+
+    <div class="mb-4 p-3 border-2 border-border bg-muted rounded">
+      <p class="text-sm text-muted-foreground">DEIN NAME</p>
+      <p class="text-xl font-bold">{{ connectionService.username() || 'Nicht festgelegt' }}</p>
     </div>
 
-    <div class="pixel-display">
-      <p class="pixel-text">DEINE ID:</p>
-      <p class="pixel-id">{{ connectionService.peerId() }}</p>
+    <div class="mb-4 p-3 border-2 border-border bg-muted rounded">
+      <p class="text-sm text-muted-foreground">DEINE ID:</p>
+      <p class="text-xl font-bold">{{ connectionService.peerId() }}</p>
+    </div>
+
+    <div class="mb-4 p-3 border-2 border-border bg-muted rounded">
+      <p class="text-sm text-muted-foreground">GEGNER:</p>
+      <p class="text-xl font-bold">{{ otherUsername() || 'Nicht festgelegt' }}</p>
     </div>
 
     @if (this.connectionService.isConnected()) {
-      <div class="pixel-status connected">
-        <p class="pixel-text">VERBUNDEN MIT:</p>
-        <p class="pixel-peer-id">{{ this.connectionService.connectedPeerId() }}</p>
+      <div class="mb-4 p-3 border-2 border-green-500 bg-green-900/50 rounded">
+        <p class="text-sm text-muted-foreground">VERBUNDEN MIT:</p>
+        <p class="text-xl font-bold">{{ this.connectionService.connectedPeerId() }}</p>
       </div>
     } @else {
-      <div class="pixel-status disconnected">
-        <p class="pixel-text">STATUS: GETRENNT</p>
+<!--      <div class="mb-4 p-3 border-2 border-destructive bg-destructive/50 rounded">
+        <p class="text-sm text-muted-foreground">STATUS: GETRENNT</p>
       </div>
-    }
+-->    }
 
-    @if (connectionService.connectionError()) {
-      <div class="pixel-error">
-        <p class="pixel-text">FEHLER:</p>
-        <p class="pixel-error-message">{{ connectionService.connectionError() }}</p>
-      </div>
-    }
-
-    <div class="pixel-controls">
+    <div class="space-y-4">
       <input
-        class="pixel-input"
+        class="w-full p-2 border-2 border-input bg-background text-foreground rounded"
         #peerIdInput
         placeholder="GEGNER-ID EINGEBEN"
-        [disabled]="connectionService.isConnected()"
+        [disabled]="!connectionService.username() || connectionService.isConnected()"
+        [hidden]="connectionService.isConnected()"
       >
 
-      <div class="pixel-buttons">
+      <div class="flex gap-2 flex-wrap">
         <button
-          class="pixel-button connect"
+          class="flex-1 p-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded uppercase disabled:opacity-50"
           (click)="connect(peerIdInput.value)"
-          [disabled]="connectionService.isConnected() || !peerIdInput.value"
+          [disabled]="!connectionService.username() || connectionService.isConnected() || !peerIdInput.value"
+          [hidden]="connectionService.isConnected()"
+
         >
           VERBINDEN
         </button>
         <button
-          class="pixel-button disconnect"
+          class="flex-1 p-2 bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded uppercase disabled:opacity-50"
           (click)="disconnect()"
           [disabled]="!connectionService.isConnected()"
+          [hidden]="!connectionService.isConnected()"
         >
           TRENNEN
         </button>
       </div>
     </div>
+
+    <button
+      class="w-full mt-4 p-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded uppercase"
+      (click)="onSubmitSQL()"
+    >
+      In die Schlacht gehen
+    </button>
   </div>
 </div>

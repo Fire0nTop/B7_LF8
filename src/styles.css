@@ -4,7 +4,9 @@
 
 
 :root {
-  --font-sans: ''
+  .font-sans {
+    font-family: "Haettenschweiler", "Arial Narrow Bold", Arial, sans-serif;
+  }
 }
 
 :root {

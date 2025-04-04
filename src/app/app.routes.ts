@@ -13,10 +13,11 @@ import {GameComponent} from '@components/game/game.component';
 
 
 export const routes: Routes = [
-  { path: '', component: GameComponent },
+
+  { path: '', component: StartConnectionComponent },
   { path: 'sql-tester', component: SqlTesterComponent },
-  { path: 'start-connection', component: StartConnectionComponent },
   { path: 'sql', component: PhpConnectionComponent },
+  { path: 'gamecomponent', component: GameComponent },
   { path: 'connect', component: TestConnectionServiceComponent },
   { path: '**', redirectTo: '/404'},
 ];
