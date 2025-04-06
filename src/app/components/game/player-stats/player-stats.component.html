@@ -1,36 +1,45 @@
 <div class="h-full p-2">
   <div class="flex-col h-full text-foreground">
-    <div class="flex gap-2 border border-border rounded p-2 ">
+    <div class="flex justify-between gap-2 border border-border rounded p-2 ">
       @if (!left()) {
-        <p>TURN DISPLAY</p>
+        <p>{{!gameService.isAttacking()}}</p> <!--TODO: make beautiful for opponent-->
       }
       <div>
         <p class="underline text-sm">{{ getUsername() }}</p>
         <!-- <p class="text-xs w-max text-muted">{{ getUuid() }}</p> -->
       </div>
       @if (left()) {
-        <p>TURN DISPLAY</p>
+        <p>{{gameService.isAttacking()}}</p> <!--TODO: make beautiful for player-->
       }
     </div>
     <div class="flex flex-col gap-2 border border-border rounded p-2 justify-center">
       @if (!other()) {
+        <p>Your Ships:</p>
         @for (ship of gameService.ships(); track ship.shipId) {
-          <button (click)="setSelectedShip(ship)" [disabled]="false">
-            <!--TODO: count and disable-->
-            <div>
-              <p class="w-max">{{ ship.shipName }} {{ ship.shipCount }}</p>
+          <button (click)="setSelectedShip(ship)" [disabled]="gameService.board.getShipCountLeft(ship) < 1">
+            <div class="flex justify-between gap-2">
+              <p>{{ ship.shipName }}</p>
+              <p>{{ gameService.board.getShipCountLeft(ship) }}</p>
               <!--TODO: image of ship-->
             </div>
           </button>
         }
-        <button (click)="switchRotation()">Switch Rotation</button>
-        <button (click)="switchBoard()">Switch Board</button>
+        <br>
+        <p>Actions:</p>
+        <button (click)="switchRotation()">Switch Rotation {{Rotation[gameService.selectedRotation()]}}</button>
+        <button (click)="switchRemoveActive()">Toggle Remove Tool to {{gameService.isRemoving() ? "Disables" : "Active"}}</button>
+
+        <button [disabled]="gameService.round() > 0" (click)="switchReady()">Set {{connectionService.isReady() ? "Unready" : "Ready"}}</button>
+
+        <button (click)="switchIsAttacking()">switchIsAttacking {{gameService.isAttacking()}}</button>
 
       } @else {
+        <p>Destroyed Ships:</p>
         @for (ship of gameService.ships(); track ship.shipId) {
-          <div>
-            <p class="w-max">{{ ship.shipName }} {{ ship.shipCount }}</p>
-            <!--TODO: image of ship and - destroyed ships count -->
+          <div class="flex justify-between gap-2">
+            <p>{{ ship.shipName }}</p>
+            <p>{{ gameService.getDestroyedShipCount(ship) }}</p>
+            <!--TODO: image of ship -->
           </div>
         }
       }

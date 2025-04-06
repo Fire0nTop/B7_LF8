@@ -2,15 +2,16 @@ import {Cell} from './cell';
 import {Ship} from '@models/ship';
 import {Rotation} from '@models/game/rotation';
 import {CellStatus} from '@models/game/cellSatus';
-import {BehaviorSubject, map} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {Attack} from '@models/connection';
+import {signal} from '@angular/core';
 
 export class Board {
 
   static readonly BOARD_SIZE = 10
 
   public board = new BehaviorSubject<Cell[][]>([]);
-
+  public readonly placedShips = signal<Ship[]>([])
   private nextPlacedShipId = 0;
 
   constructor(public sizeX: number, public sizeY: number) {
@@ -55,25 +56,36 @@ export class Board {
     }
 
     this.board.next(updatedBoard);
-    console.log("placed ship at", x, y, "with placedShipId", placedShipId,this.board.getValue());
+    this.placedShips.set([...this.placedShips(), ship]);
     return true;
   }
 
-  private checkShipPlacement(ship: Ship, x: number, y: number, rotation: Rotation): boolean {
-    for (let dx = 0; dx < ship.horizontalSize; dx++) {
-      for (let dy = 0; dy < ship.verticalSize; dy++) {
-        const newX = rotation === Rotation.horizontal ? x + dx : x + dy;
-        const newY = rotation === Rotation.horizontal ? y + dy : y + dx;
+  public removeShip(x: number, y: number) {
+    const currentCell = this.board.getValue()[x][y]
+    if (currentCell.placedShipId !== null) {
+      const positions = this.getAllPositionsOfPlaceId(currentCell.placedShipId);
 
-        if (newX >= this.sizeX || newY >= this.sizeY || this.board.getValue()[newX][newY].status !== CellStatus.empty) {
-          return false;
+      const ships = [...this.placedShips()];
+      const ship = currentCell.content
+      if (ship) {
+        const index = ships.findIndex(s => s.shipId === ship.shipId);
+        if (index !== -1) {
+          ships.splice(index, 1);
+          this.placedShips.set(ships);
         }
       }
+
+      const updatedBoard = this.board.getValue().map(row => [...row]);
+      positions.forEach((position) => {
+        updatedBoard[position.x][position.y].content = null;
+        updatedBoard[position.x][position.y].status = CellStatus.empty;
+        updatedBoard[position.x][position.y].placedShipId = null;
+      })
+      this.board.next(updatedBoard);
     }
-    return true;
   }
 
-  public checkIfShipIsDestroyed(placedShipId:number): boolean {
+  public checkIfShipIsDestroyed(placedShipId: number): boolean {
     const board = this.board.getValue();
 
     for (let x = 0; x < this.sizeX; x++) {
@@ -87,10 +99,9 @@ export class Board {
     return true;
   }
 
-  public getAllCellsOfPlaceId(placedShipId:number): Cell[] {
-    //TODO : fix this return null somehow
+  public getAllCellsOfPlaceId(placedShipId: number): Cell[] {
     const board = this.board.getValue();
-    const cells:Cell[] = []
+    const cells: Cell[] = []
 
     for (let x = 0; x < this.sizeX; x++) {
       for (let y = 0; y < this.sizeY; y++) {
@@ -103,10 +114,9 @@ export class Board {
     return cells;
   }
 
-  public getAllPositionsOfPlaceId(placedShipId:number): Attack[] {
-    //TODO : fix this return null somehow
+  public getAllPositionsOfPlaceId(placedShipId: number): Attack[] {
     const board = this.board.getValue();
-    const positions:Attack[] = []
+    const positions: Attack[] = []
 
     for (let x = 0; x < this.sizeX; x++) {
       for (let y = 0; y < this.sizeY; y++) {
@@ -117,5 +127,25 @@ export class Board {
       }
     }
     return positions;
+  }
+
+  public getShipCountLeft(ship: Ship): number {
+    return ship.shipCount - this.placedShips().filter(value => value.shipId == ship.shipId).length;
+  }
+
+  private checkShipPlacement(ship: Ship, x: number, y: number, rotation: Rotation): boolean {
+    if (this.getShipCountLeft(ship) < 1) return false;
+
+    for (let dx = 0; dx < ship.horizontalSize; dx++) {
+      for (let dy = 0; dy < ship.verticalSize; dy++) {
+        const newX = rotation === Rotation.horizontal ? x + dx : x + dy;
+        const newY = rotation === Rotation.horizontal ? y + dy : y + dx;
+
+        if (newX >= this.sizeX || newY >= this.sizeY || this.board.getValue()[newX][newY].status !== CellStatus.empty) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

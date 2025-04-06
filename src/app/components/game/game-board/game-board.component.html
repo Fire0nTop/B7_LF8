@@ -3,17 +3,17 @@
        [style.gridTemplateRows]="'repeat(' + (board.board.getValue().length + 1) + ', 1fr)'"
        [style.gridTemplateColumns]="'repeat(' + (board.board.getValue()[0].length + 1) + ', 1fr)'"
   >
-    <div></div>
+    <button (click)="attackBoard.set(!attackBoard())">switch Boards</button>
 
     @for (row of this.board.board.getValue(); track row; let rowIndex = $index) {
       <div class="flex justify-center items-end text-foreground p-2">{{ String.fromCharCode(65 + rowIndex) }}</div>
     }
 
     @for (row of this.board.board.getValue(); track row; let rowIndex = $index) {
-      <div class="flex justify-end items-center text-foreground p-4">{{ rowIndex }}</div>
+      <div class="flex justify-end items-center text-foreground p-4">{{ rowIndex + 1 }}</div>
 
       @for (cell of row; track cell; let columIndex = $index) {
-        @if (gameService.isAttacking()) {
+        @if (attackBoard()) {
           <app-attack-game-cell [X]="rowIndex" [Y]="columIndex"></app-attack-game-cell>
         } @else {
           <app-game-cell [X]="rowIndex" [Y]="columIndex"></app-game-cell>
@@ -21,4 +21,5 @@
       }
     }
   </div>
+
 </div>

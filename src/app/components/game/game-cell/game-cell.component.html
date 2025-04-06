@@ -6,10 +6,10 @@
       <p>{{content()?.shipName}}</p>
       <p>{{placedShipId()}}</p>
     } @else {
-      <div class="relative w-8 h-8 overflow-visible">
+      <div class="relative w-full h-full overflow-visible">
         <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Water"/>
         <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Boat"/>
-        <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Hit marker"/>
+        <img src="game-resources/water/water.gif" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Hit marker"/>
       </div>
     }
   </div>

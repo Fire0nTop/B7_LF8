@@ -4,7 +4,8 @@ import {DatabaseService} from '@services/database-service/database.service';
 import {CellStatus} from '@models/game/cellSatus';
 import {Zug} from '@models/Zug';
 import {Ship} from '@models/ship';
-import {Attack, AttackResult, Game} from '@models/connection';
+import {Attack, AttackResponse, AttackResult, Game} from '@models/connection';
+import {toObservable} from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,23 @@ import {Attack, AttackResult, Game} from '@models/connection';
 export class GameService {
 
   public readonly board: Board;
-  public readonly moves: Zug[] = []
-  public readonly ships = signal<Ship[]>([])
+  public moves: Zug[] = [] //ToDO: save moves
 
   public readonly selectedShip = signal<Ship | null>(null)
+  public readonly isRemoving = signal<boolean>(false)
   public readonly selectedRotation = signal<Rotation>(Rotation.horizontal)
 
+  public readonly round = signal<number>(0)
   public readonly isAttacking = signal<boolean>(false)
+
+  public readonly ships = signal<Ship[]>([])
+
+  public readonly destroyedShips = signal<Map<string,AttackResponse>>(new Map)
 
   constructor(public databaseService: DatabaseService) {
     this.board = new Board(Board.BOARD_SIZE,Board.BOARD_SIZE);
     databaseService.getAllShips().subscribe(value => this.ships.set(value))
+    toObservable(this.isAttacking).subscribe(value => console.log("isAttacking",value))
   }
 
   public saveGameData(gameData: Game) {
@@ -34,8 +41,16 @@ export class GameService {
     // return Game
   }
 
-  public saveMoves(move: Zug) {
-    //TODO: save move
+  public saveMove(attack:Attack,attackResult:AttackResult) {
+    //TODO playerId and gameID set
+    this.moves.push({
+      treffer: attackResult !== AttackResult.Miss,
+      runde: this.round(),
+      kordinateX: attack.x,
+      kordinateY: attack.y,
+      spielerId: -1,
+      spielId: -1,
+    })
   }
 
   public computeAttack(attack:Attack): AttackResult {
@@ -58,5 +73,34 @@ export class GameService {
       this.board.setCellStatus(attack.x, attack.y,CellStatus.destroyed);
     }
     console.log("getting cell at", attack.x, attack.y, "=>", this.board.board.getValue()[attack.x][attack.y]);
+  }
+
+  public coordsKeyFromAttack(attack: { x: number, y: number }): string {
+    return `${attack.x},${attack.y}`;
+  }
+
+  public attackFromKeyCoords(key: string): { x: number, y: number } {
+    const [x, y] = key.split(',').map(Number); // Convert the split parts back to numbers
+    return { x, y };
+  }
+
+  public getDestroyedShipCount(ship: Ship): number {
+    //TODO: fix cause 1 ship with 2 cells count a 2 instead of 1
+    let destroyedShipCount = 0
+    this.destroyedShips().forEach((value, key) => {
+      if (value.destroyedShip?.shipId == ship.shipId) {
+        destroyedShipCount += 1;
+      }
+    })
+    return destroyedShipCount;
+  }
+
+  public cleanUp(): void {
+    this.round.set(0)
+    this.moves = []
+  }
+
+  public newRound() {
+    this.round.set(this.round() + 1)
   }
 }
