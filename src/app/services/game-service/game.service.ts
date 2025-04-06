@@ -13,7 +13,7 @@ import {toObservable} from '@angular/core/rxjs-interop';
 export class GameService {
 
   public readonly board: Board;
-  public moves: Zug[] = [] //ToDO: save moves
+  public moves: Zug[] = []
 
   public readonly selectedShip = signal<Ship | null>(null)
   public readonly isRemoving = signal<boolean>(false)
@@ -25,6 +25,8 @@ export class GameService {
   public readonly ships = signal<Ship[]>([])
 
   public readonly destroyedShips = signal<Map<string,AttackResponse>>(new Map)
+
+  public readonly isDebugging = signal<boolean>(false)
 
   constructor(public databaseService: DatabaseService) {
     this.board = new Board(Board.BOARD_SIZE,Board.BOARD_SIZE);

@@ -1,6 +1,6 @@
 <button (click)="onPress()" class="h-full aspect-square border-2 border-border group-hover:border-destructive duration-300">
   <div class="h-full w-full opacity-30 hover:bg-primary">
-    @if (true) {
+    @if (gameService.isDebugging()) {
       <p>{{X + "-" + Y}}</p>
       <p>{{attacked()}}</p>
       <p>{{result()}}</p>
@@ -9,7 +9,7 @@
       <div class="relative w-full h-full overflow-visible">
         <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Water"/>
         <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Boat"/>
-        <img src="game-resources/water/water.gif" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Hit marker"/>
+        <img src="game-resources/default/water.gif" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Hit marker"/>
       </div>
     }
   </div>
