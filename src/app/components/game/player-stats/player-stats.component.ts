@@ -52,7 +52,10 @@ export class PlayerStatsComponent {
   }
 
   switchReady() {
-    this.connectionService.isReady.update(value => !value)
-    this.connectionService.sendReady(this.connectionService.isReady())
+    this.connectionService.sendReady(!this.connectionService.isReady())
+  }
+
+  switchDebugmode() {
+    this.gameService.isDebugging.update(value => !value)
   }
 }

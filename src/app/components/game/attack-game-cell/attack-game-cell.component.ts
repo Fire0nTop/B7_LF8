@@ -35,7 +35,7 @@ export class AttackGameCellComponent {
   }
 
   onPress() {
-    if (!this.attacked() ) { //TODO: add && this.gameService.round() > 0
+    if (!this.attacked() && this.gameService.isAttacking() && this.gameService.round() > 0) {
       this.connectionService.sendAttack({x: this.X, y: this.Y}).then(r => this.attacked.set(true))
     }
   }

@@ -26,7 +26,7 @@ export class GameService {
 
   public readonly destroyedShips = signal<Map<string,AttackResponse>>(new Map)
 
-  public readonly isDebugging = signal<boolean>(false)
+  public readonly isDebugging = signal<boolean>(true)
 
   constructor(public databaseService: DatabaseService) {
     this.board = new Board(Board.BOARD_SIZE,Board.BOARD_SIZE);
@@ -87,14 +87,13 @@ export class GameService {
   }
 
   public getDestroyedShipCount(ship: Ship): number {
-    //TODO: fix cause 1 ship with 2 cells count a 2 instead of 1
-    let destroyedShipCount = 0
+    let destroyedShipCellCount = 0
     this.destroyedShips().forEach((value, key) => {
       if (value.destroyedShip?.shipId == ship.shipId) {
-        destroyedShipCount += 1;
+        destroyedShipCellCount += 1;
       }
     })
-    return destroyedShipCount;
+    return destroyedShipCellCount / ship.horizontalSize * ship.verticalSize;
   }
 
   public cleanUp(): void {
@@ -104,5 +103,10 @@ export class GameService {
 
   public newRound() {
     this.round.set(this.round() + 1)
+  }
+
+  gameOver(winner:string) {
+    this.isAttacking.set(false)
+    //TODO: add navigate to winner page
   }
 }

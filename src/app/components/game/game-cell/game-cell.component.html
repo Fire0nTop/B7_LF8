@@ -7,9 +7,9 @@
       <p>{{placedShipId()}}</p>
     } @else {
       <div class="relative w-full h-full overflow-visible">
-        <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Water"/>
-        <img src="" class="absolute top-0 left-0 w-8 h-8"  alt="Boat"/>
-        <img src="game-resources/default/water.gif" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Hit marker"/>
+        <img src="game-resources/default/water.gif" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Water"/>
+        <img src="" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Boat"/>
+        <img [hidden]="status() !== CellStatus.destroyed" src="game-resources/tom/hit.png" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Hit Marker"/>
       </div>
     }
   </div>

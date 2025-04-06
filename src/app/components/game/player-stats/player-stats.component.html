@@ -32,6 +32,7 @@
         <button [disabled]="gameService.round() > 0" (click)="switchReady()">Set {{connectionService.isReady() ? "Unready" : "Ready"}}</button>
 
         <button (click)="switchIsAttacking()">switchIsAttacking {{gameService.isAttacking()}}</button>
+        <button (click)="switchDebugmode()">switchIsAttacking {{gameService.isDebugging()}}</button>
 
       } @else {
         <p>Destroyed Ships:</p>

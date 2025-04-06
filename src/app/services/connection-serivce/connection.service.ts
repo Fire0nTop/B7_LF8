@@ -1,6 +1,6 @@
 import {computed, DestroyRef, inject, Injectable, signal} from '@angular/core';
 import {PeerService} from '../peer-service/peer-service.service';
-import {Attack, AttackResponse, AttackResult, Game} from '@models/index';
+import {Attack, AttackResponse, AttackResult} from '@models/index';
 import {Observable, Subject} from 'rxjs';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {MessageType} from '@models/connection/message-types';
@@ -48,8 +48,14 @@ export class ConnectionService {
           }
           break;
       }
-      console.log("destroyedShips",gameService.destroyedShips())
+      console.log("destroyedShips", gameService.destroyedShips())
     });
+
+    toObservable(this.isReady).subscribe(isReady => {
+      if (isReady && this.otherIsReady()) {
+        gameService.newRound()
+      }
+    })
   }
 
   public connectToPeer(peerId: string) {
@@ -77,11 +83,6 @@ export class ConnectionService {
       });
     });
   }
-
-  public sendGame(game: Game) {
-    this.peerService.sendData({type: MessageType.Game, game});
-  }
-
   public sendUsername(): Promise<string> {
     let username = this.username();
     return new Promise<string>((resolve) => {
@@ -97,10 +98,15 @@ export class ConnectionService {
   }
 
   public sendReady(isReady: boolean): Promise<boolean> {
+
+    if (this.gameService.ships().map(ship => this.gameService.board.getShipCountLeft(ship)).filter(shipCount => shipCount > 0).length > 1) {
+      return new Promise<boolean>(() => false)
+    }
+
     this.isReady.set(isReady);
 
     return new Promise<boolean>((resolve) => {
-      this.peerService.sendData({ type: MessageType.Ready, ready: isReady });
+      this.peerService.sendData({type: MessageType.Ready, ready: isReady});
 
       const subscription = this.peerService.onDataReceived$.subscribe((data) => {
         if (data.type === MessageType.ReadyResponse) {
@@ -110,6 +116,10 @@ export class ConnectionService {
         }
       });
     });
+  }
+
+  public sendGameOver() {
+    this.peerService.sendData({type: MessageType.GameOver, winner: this.peerId()});
   }
 
 
@@ -128,24 +138,40 @@ export class ConnectionService {
           this.attackResultReceived.next(data);
           this.computeAttackResponse(data)
           this.gameService.newRound()
+          console.log(this.gameService.ships().every(ship => this.gameService.getDestroyedShipCount(ship) == ship.shipCount),this.gameService.ships().map(ship => {
+            return {count:this.gameService.getDestroyedShipCount(ship) ,shipMaxCount: ship.shipCount, ship: ship};
+          }))
+          if (this.gameService.ships().every(ship => this.gameService.getDestroyedShipCount(ship) == ship.shipCount)) {
+            this.sendGameOver()
+          }
           break;
 
         case MessageType.GameOver:
-          console.log('Game Over received');
-          this.sendGameOverResponse();
+          console.log('Game Over received', data.winner);
+          this.gameService.gameOver(data.winner);
+          this.sendGameOverResponse(data.winner);
           break;
 
         case MessageType.GameOverResponse:
-          console.log('Game OverResponse received');
+          console.log('Game OverResponse received', data.winner);
+          this.gameService.gameOver(data.winner);
           break;
 
-        case MessageType.Game:
-          console.log('Game received: ' + data.game);
-          this.sendGameResponse(data.game);
+        case MessageType.GameStart:
+          console.log('Game Start received: ' + data.startPeerId);
+          this.sendGameStartResponse(data.startPeerId);
+          this.gameService.newRound()
+          if (data.startPeerId === this.peerId()) {
+            this.gameService.isAttacking.set(true)
+          }
           break;
 
-        case MessageType.GameResponse:
-          console.log('Game Response received: ' + data.game);
+        case MessageType.GameStartResponse:
+          console.log('Game Start Response received: ' + data.startPeerId);
+          this.gameService.newRound()
+          if (data.startPeerId === this.peerId()) {
+            this.gameService.isAttacking.set(true)
+          }
           break;
 
         case MessageType.Username:
@@ -165,7 +191,7 @@ export class ConnectionService {
 
         case MessageType.SaveGame:
           console.log('SaveGame received: ' + data.saveGame);
-          this.sendSaveGameResponse(data);
+          this.sendSaveGameResponse();
           break;
 
         case MessageType.SaveGameResponse:
@@ -174,11 +200,15 @@ export class ConnectionService {
 
         case MessageType.Ready:
           console.log('Ready received: ' + data.ready);
-          this.sendReadyResponse(data);
+          this.sendReadyResponse();
           break;
 
         case MessageType.ReadyResponse:
           console.log('Ready Response received: ' + data.ready);
+          this.otherIsReady.set(data.ready);
+          if (this.isReady() && this.otherIsReady()) {
+            this.sendGameStart(this.peerId())
+          }
           break;
       }
     });
@@ -209,21 +239,21 @@ export class ConnectionService {
     this.peerService.sendData({type: MessageType.UsernameResponse, username: this.username() || 'Player'});
   }
 
-  private sendGameOverResponse() {
-    this.peerService.sendData({type: MessageType.GameOverResponse});
+  private sendGameOverResponse(winner: string) {
+    this.peerService.sendData({type: MessageType.GameOverResponse, winner: winner});
   }
 
-  private sendGameResponse(game: Game): void {
-    this.peerService.sendData({type: MessageType.GameResponse, game});
+  private sendGameStartResponse(startPeerId:string): void {
+    this.peerService.sendData({type: MessageType.GameStartResponse, startPeerId:startPeerId});
   }
 
-  private sendSaveGameResponse(data: any) {
+  private sendSaveGameResponse() {
     this.peerService.sendData({type: MessageType.SaveGameResponse, saveGame: null});
   }
 
   private computeAttackResponse(data: any) {
     if (data.attackResult !== null) {
-      this.gameService.saveMove(data.attack,data.attackResult)
+      this.gameService.saveMove(data.attack, data.attackResult)
       if (data.attackResult !== AttackResult.Miss) {
         this.gameService.isAttacking.set(true)
       } else {
@@ -232,7 +262,11 @@ export class ConnectionService {
     }
   }
 
-  private sendReadyResponse(data: any) {
+  private sendReadyResponse() {
     this.peerService.sendData({type: MessageType.ReadyResponse, ready: this.isReady()});
+  }
+
+  private sendGameStart(startPeerId: string) {
+    this.peerService.sendData({type: MessageType.GameStart, startPeerId:startPeerId});
   }
 }
