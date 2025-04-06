@@ -54,8 +54,7 @@ describe('DatabaseService', () => {
 
   describe('Spiel-Methoden', () => {
     it('should create new Spiel', () => {
-      const testSpiel = new Spiel(1);
-      service.createGame(testSpiel).subscribe();
+      service.createGame().subscribe();
 
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain('INSERT%20INTO%20spiel%20(spiel_id)%20VALUES%20(1)');
@@ -73,10 +72,15 @@ describe('DatabaseService', () => {
 
   describe('SchiffPosition-Methoden', () => {
     it('should set SchiffPosition', () => {
-      const position = new SchiffPosition(
-        1, 1, 1, 10, 15, false
-      );
-
+      const position:SchiffPosition = {
+        schiffPositionId:0,
+        positionX:1,
+        positionY:1,
+        spielId:1,
+        schiffId:10,
+        spielerId:15,
+        zerstoert:false,
+      }
       service.setShipPosition(position).subscribe();
 
       const req = httpMock.expectOne(mockUrl);

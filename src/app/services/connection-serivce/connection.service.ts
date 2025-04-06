@@ -5,6 +5,7 @@ import {Observable, Subject} from 'rxjs';
 import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 import {MessageType} from '@models/connection/message-types';
 import {GameService} from '@services/game-service/game.service';
+import {GameSave} from '@models/connection/game-save';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class ConnectionService {
   public onAttackResultReceived: Observable<AttackResponse> = this.attackResultReceived.pipe(
     takeUntilDestroyed(this.destroyRef)
   );
+  public savedGameId = signal<string>('');
 
   constructor(private peerService: PeerService, private gameService: GameService) {
     this.listenForMessages();
@@ -158,7 +160,7 @@ export class ConnectionService {
           break;
 
         case MessageType.GameStart:
-          console.log('Game Start received: ' + data.startPeerId);
+          console.log('Game Start received: ', data.startPeerId);
           this.sendGameStartResponse(data.startPeerId);
           this.gameService.newRound()
           if (data.startPeerId === this.peerId()) {
@@ -167,7 +169,7 @@ export class ConnectionService {
           break;
 
         case MessageType.GameStartResponse:
-          console.log('Game Start Response received: ' + data.startPeerId);
+          console.log('Game Start Response received: ', data.startPeerId);
           this.gameService.newRound()
           if (data.startPeerId === this.peerId()) {
             this.gameService.isAttacking.set(true)
@@ -175,36 +177,38 @@ export class ConnectionService {
           break;
 
         case MessageType.Username:
-          console.log('Username received: ' + data.username);
+          console.log('Username received: ', data.username);
           this.sendUsernameAnswer();
           this.otherUsername.set(data.username);
           break;
 
         case MessageType.UsernameResponse:
-          console.log('Username Response received: ' + data.username);
+          console.log('Username Response received: ', data.username);
           this.otherUsername.set(data.username);
           break;
 
         case MessageType.SaveGameRequest:
-          console.log('SaveGameRequest received: ' + data.saveGameRequest);
+          console.log('SaveGameRequest received');
+          this.sendSaveGameData()
           break;
 
         case MessageType.SaveGame:
-          console.log('SaveGame received: ' + data.saveGame);
-          this.sendSaveGameResponse();
+          console.log('SaveGame received: ', data.saveGame);
+          this.sendSaveGameResponse(data.saveGame)
           break;
 
         case MessageType.SaveGameResponse:
-          console.log('SaveGame Response received: ' + data.saveGame);
+          console.log('SaveGame Response received: ', data.saveGame);
+          this.savedGameId.set(data.saveGame.toString());
           break;
 
         case MessageType.Ready:
-          console.log('Ready received: ' + data.ready);
+          console.log('Ready received: ', data.ready);
           this.sendReadyResponse();
           break;
 
         case MessageType.ReadyResponse:
-          console.log('Ready Response received: ' + data.ready);
+          console.log('Ready Response received: ', data.ready);
           this.otherIsReady.set(data.ready);
           if (this.isReady() && this.otherIsReady()) {
             this.sendGameStart(this.peerId())
@@ -247,8 +251,11 @@ export class ConnectionService {
     this.peerService.sendData({type: MessageType.GameStartResponse, startPeerId:startPeerId});
   }
 
-  private sendSaveGameResponse() {
-    this.peerService.sendData({type: MessageType.SaveGameResponse, saveGame: null});
+  private async sendSaveGameResponse(saveGame:GameSave) {
+    const gameId = await this.gameService.saveGameData(await this.gameService.getGameSave(this.username()), saveGame)
+    console.log(await this.gameService.getGameSave(this.username()), saveGame)
+    this.savedGameId.set(gameId.toString())
+    this.peerService.sendData({type: MessageType.SaveGameResponse, saveGame: gameId});
   }
 
   private computeAttackResponse(data: any) {
@@ -268,5 +275,16 @@ export class ConnectionService {
 
   private sendGameStart(startPeerId: string) {
     this.peerService.sendData({type: MessageType.GameStart, startPeerId:startPeerId});
+  }
+
+  public requestGameSave() {
+    this.peerService.sendData({type:MessageType.SaveGameRequest})
+  }
+
+  private async sendSaveGameData() {
+    this.peerService.sendData({
+      type: MessageType.SaveGame,
+      saveGame: await this.gameService.getGameSave(this.username())
+    })
   }
 }

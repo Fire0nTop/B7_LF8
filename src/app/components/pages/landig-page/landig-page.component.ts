@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameService } from '@services/game-service/game.service';
+import {ConnectionService} from '@services/connection-serivce/connection.service';
 
 @Component({
   selector: 'app-landig-page',
@@ -13,12 +14,12 @@ import { GameService } from '@services/game-service/game.service';
 export class LandigPageComponent {
   constructor(
     private router: Router,
-    private gameService: GameService
+    private connectionService: ConnectionService
   ) {}
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      //this.gameService.setPlayerName(form.value.username); TODO: fix this
+      this.connectionService.username.set(form.value.username);
       this.router.navigate(['/start-connection']); // Korrigierte Navigation
     }
   }
