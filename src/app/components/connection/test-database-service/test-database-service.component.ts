@@ -70,7 +70,7 @@ export class TestDatabaseServiceComponent {
   }
 
   createSpiel() {
-    this.databaseService.createGame({} as Spiel).subscribe(data => this.spiel.set(data));
+    this.databaseService.createGame().subscribe(data => this.spiel.set(data));
   }
 
   getAktivesSpiel() {
