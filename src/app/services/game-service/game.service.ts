@@ -31,7 +31,7 @@ export class GameService {
 
   public readonly destroyedShips = signal<Map<string, AttackResponse>>(new Map)
 
-  public readonly isDebugging = signal<boolean>(true)
+  public readonly isDebugging = signal<boolean>(false)
 
   constructor(public databaseService: DatabaseService) {
     this.board = new Board(Board.BOARD_SIZE, Board.BOARD_SIZE);
