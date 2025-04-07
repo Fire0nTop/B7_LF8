@@ -3,7 +3,7 @@
        [style.gridTemplateRows]="'repeat(' + (board.board.getValue().length + 1) + ', 1fr)'"
        [style.gridTemplateColumns]="'repeat(' + (board.board.getValue()[0].length + 1) + ', 1fr)'"
   >
-    <button (click)="attackBoard.set(!attackBoard())">switch Boards</button>
+    <div></div>
 
     @for (row of this.board.board.getValue(); track row; let rowIndex = $index) {
       <div class="flex justify-center items-end text-foreground p-2">{{ String.fromCharCode(65 + rowIndex) }}</div>
@@ -21,5 +21,5 @@
       }
     }
   </div>
-
+  <button (click)="attackBoard.set(!attackBoard())">switch Boards</button>
 </div>
