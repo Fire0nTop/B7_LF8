@@ -3,13 +3,10 @@ import {ConnectionService} from '@services/connection-serivce/connection.service
 import {GameService} from '@services/game-service/game.service';
 import {Ship} from '@models/ship';
 import {Rotation} from '@models/game';
-import {SlicePipe} from '@angular/common';
 
 @Component({
   selector: 'app-player-stats',
-  imports: [
-    SlicePipe
-  ],
+  imports: [],
   templateUrl: './player-stats.component.html'
 })
 export class PlayerStatsComponent {
@@ -60,6 +57,10 @@ export class PlayerStatsComponent {
 
   switchDebugmode() {
     this.gameService.isDebugging.update(value => !value)
+  }
+
+  getShipInitials(name: string): string {
+    return (name.replace(/[^a-zA-Z]/g, '').slice(0, 2) || '??').toUpperCase();
   }
 
   protected readonly Ship = Ship;
