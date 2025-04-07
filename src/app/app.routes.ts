@@ -7,6 +7,7 @@ import {
 } from '@components/connection/test-connection-service/test-connection-service.component';
 import {PhpConnectionComponent} from '@components/connection/php-connection/php-connection.component';
 import {GameComponent} from '@components/game/game.component';
+import {WinnerComponent} from '@components/winner/winner.component';
 
 
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'sql-tester', component: PhpConnectionComponent },
   { path: 'gamecomponent', component: GameComponent },
   { path: 'connect', component: TestConnectionServiceComponent },
+  { path: 'winner/:uuid', component: WinnerComponent },
   { path: '**', redirectTo: '/404'},
 ];
 

@@ -1,51 +1,82 @@
-<div class="h-full p-2">
-  <div class="flex-col h-full text-foreground">
-    <div class="flex justify-between gap-2 border border-border rounded p-2 ">
-      @if (!left()) {
-        <p>{{!gameService.isAttacking()}}</p> <!--TODO: make beautiful for opponent-->
-      }
-      <div>
-        <p class="underline text-sm">{{ getUsername() }}</p>
-        <!-- <p class="text-xs w-max text-muted">{{ getUuid() }}</p> -->
+<div class="h-full p-4 bg-navy-900 text-white">
+  <!-- Player Header -->
+  <div class="flex justify-between items-center bg-navy-700 p-3 rounded-lg border border-navy-500 mb-4">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 flex items-center justify-center rounded-full bg-cyan-600 text-white font-bold text-sm">
+        {{ gameService.isAttacking() ? 'ATK' : 'DEF' }}
       </div>
-      @if (left()) {
-        <p>{{gameService.isAttacking()}}</p> <!--TODO: make beautiful for player-->
-      }
+      <div>
+        <p class="font-bold text-cyan-300">{{ getUsername() }}</p>
+        <p class="text-xs text-gray-400">Game ID: {{ getUuid() | slice:0:8 }}</p>
+      </div>
     </div>
-    <div class="flex flex-col gap-2 border border-border rounded p-2 justify-center">
-      @if (!other()) {
-        <p>Your Ships:</p>
-        @for (ship of gameService.ships(); track ship.shipId) {
-          <button (click)="setSelectedShip(ship)" [disabled]="gameService.board.getShipCountLeft(ship) < 1">
-            <div class="flex justify-between gap-2">
-              <p>{{ ship.shipName }}</p>
-              <p>{{ gameService.board.getShipCountLeft(ship) }}</p>
-              <!--TODO: image of ship-->
+
+    <div class="bg-navy-600 px-3 py-1 rounded-full text-sm font-medium">
+      {{ gameService.isAttacking() ? 'TARGETING MODE' : 'DEPLOYMENT MODE' }}
+    </div>
+  </div>
+
+  <!-- Fleet Status -->
+  <div class="bg-navy-700 rounded-lg p-4 mb-4 border border-navy-500">
+    <h3 class="text-lg font-bold text-white mb-3 pb-2 border-b border-navy-500">YOUR FLEET</h3>
+
+    <div class="space-y-2">
+      @for (ship of gameService.ships(); track ship.shipId) {
+        <button
+          (click)="setSelectedShip(ship)"
+          [disabled]="gameService.board.getShipCountLeft(ship) < 1"
+          class="w-full flex justify-between items-center p-3 rounded-lg transition-all"
+          [class.bg-cyan-900]="gameService.selectedShip()?.shipId === ship.shipId"
+          [class.bg-navy-600]="gameService.selectedShip()?.shipId !== ship.shipId"
+          [class.opacity-50]="gameService.board.getShipCountLeft(ship) < 1"
+          [class.hover:bg-cyan-800]="gameService.board.getShipCountLeft(ship) > 0">
+
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 flex items-center justify-center bg-navy-500 rounded-lg font-bold">
+              {{ ship.shipName | slice:0:2 }}
             </div>
-          </button>
-        }
-        <br>
-        <p>Actions:</p>
-        <button (click)="switchRotation()">Switch Rotation {{Rotation[gameService.selectedRotation()]}}</button>
-        <button (click)="switchRemoveActive()">Toggle Remove Tool to {{gameService.isRemoving() ? "Disables" : "Active"}}</button>
-
-        <button [disabled]="gameService.round() > 0" (click)="switchReady()">Set {{connectionService.isReady() ? "Unready" : "Ready"}}</button>
-
-        <button (click)="switchIsAttacking()">switchIsAttacking {{gameService.isAttacking()}}</button>
-        <button (click)="switchDebugmode()">switchIsDebugging {{gameService.isDebugging()}}</button>
-
-        <button (click)="connectionService.requestGameSave()">Save Game {{connectionService.savedGameId()}}</button>
-
-      } @else {
-        <p>Destroyed Ships:</p>
-        @for (ship of gameService.ships(); track ship.shipId) {
-          <div class="flex justify-between gap-2">
-            <p>{{ ship.shipName }}</p>
-            <p>{{ gameService.getDestroyedShipCount(ship) }}</p>
-            <!--TODO: image of ship -->
+            <span class="font-medium">{{ ship.shipName }}</span>
           </div>
-        }
+
+          <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-300">Size: {{ ship.horizontalSize }}×{{ ship.verticalSize }}</span>
+            <span class="bg-navy-500 px-2 py-1 rounded-full text-xs font-bold">
+              {{ gameService.board.getShipCountLeft(ship) }} left
+            </span>
+          </div>
+        </button>
       }
     </div>
+  </div>
+
+  <!-- Command Panel -->
+  <div class="bg-navy-700 rounded-lg p-4 border border-navy-500">
+    <h3 class="text-lg font-bold text-white mb-3 pb-2 border-b border-navy-500">COMMAND PANEL</h3>
+
+    <div class="grid grid-cols-2 gap-3 mb-3">
+      <button
+        (click)="switchRotation()"
+        class="bg-cyan-800 hover:bg-cyan-700 p-3 rounded-lg text-sm font-medium transition-colors">
+        ROTATE: {{ Rotation[gameService.selectedRotation()] }}
+      </button>
+
+      <button
+        (click)="switchRemoveActive()"
+        [class.bg-red-800]="gameService.isRemoving()"
+        [class.bg-navy-600]="!gameService.isRemoving()"
+        class="hover:bg-opacity-80 p-3 rounded-lg text-sm font-medium transition-colors">
+        {{ gameService.isRemoving() ? 'CANCEL REMOVE' : 'REMOVE MODE' }}
+      </button>
+    </div>
+
+    <button
+      [disabled]="gameService.round() > 0"
+      (click)="switchReady()"
+      [class.bg-green-700]="connectionService.isReady()"
+      [class.bg-cyan-600]="!connectionService.isReady()"
+      class="w-full p-3 rounded-lg font-bold transition-colors hover:bg-opacity-90"
+      [class.opacity-70]="gameService.round() > 0">
+      {{ connectionService.isReady() ? 'AWAITING OPPONENT...' : 'CONFIRM DEPLOYMENT' }}
+    </button>
   </div>
 </div>

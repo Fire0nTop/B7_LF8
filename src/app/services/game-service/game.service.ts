@@ -9,6 +9,8 @@ import {toObservable} from '@angular/core/rxjs-interop';
 import {Spieler} from '@models/Spieler';
 import {firstValueFrom} from 'rxjs';
 import {GameSave} from '@models/connection/game-save';
+import {SchiffPosition} from '@models/SchiffPosition';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
