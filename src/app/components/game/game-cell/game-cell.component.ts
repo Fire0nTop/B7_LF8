@@ -3,6 +3,8 @@ import {GameService} from '@services/game-service/game.service';
 
 import {Ship} from '@models/ship';
 import { CellStatus } from '@models/game/cellSatus';
+import {ResourceService} from '@services/resource-service/resource.service';
+import {Cell} from '@models/game';
 
 @Component({
   selector: 'app-game-cell',
@@ -15,11 +17,9 @@ export class GameCellComponent implements OnInit {
   public readonly content = signal<Ship | null>(null);
   public readonly status = signal<CellStatus>(CellStatus.empty);
   public readonly placedShipId = signal<number|null>(null);
-  public readonly shipImagePath = signal<string>('');
-  public readonly isShip = signal<boolean>(false);
-  public readonly isHorizontal = signal<boolean>(false);
+  public readonly shipSrc = signal<string>('');
 
-  constructor(public gameService: GameService) {}
+  constructor(public gameService: GameService,public resourceService: ResourceService,) {}
 
   ngOnInit(): void {
     this.gameService.board.board.subscribe(board => {
@@ -28,31 +28,10 @@ export class GameCellComponent implements OnInit {
       this.status.set(cell.status);
       this.placedShipId.set(cell.placedShipId);
 
-      if (cell.content) {
-        this.isShip.set(true);
-        this.isHorizontal.set(this.determineShipOrientation(cell.content));
-        this.shipImagePath.set(this.getShipImagePath(cell.content));
-      } else {
-        this.isShip.set(false);
-        this.shipImagePath.set('');
+      if (cell.content != null && cell.placedShipId != null) {
+        this.shipSrc.set(this.resourceService.getShipImgSourceForCell(this.gameService.board.getAllPositionsOfPlaceId(cell.placedShipId),cell.content,{x: this.X, y: this.Y}));
       }
     });
-  }
-
-  private determineShipOrientation(ship: Ship): boolean {
-    // Assuming orientation can be determined by comparing sizes
-    return ship.horizontalSize > ship.verticalSize;
-  }
-
-  private getShipImagePath(ship: Ship): string {
-    const orientation = this.isHorizontal() ? 'h' : 'v';
-    const size = this.isHorizontal() ? ship.horizontalSize : ship.verticalSize;
-
-    // Example path: assets/ships/carrier-h.png
-    return `game/tom/ship-${ship.horizontalSize.toString()}-${orientation}.png`;
-
-    // Alternative if you have size-based images:
-    // return `assets/ships/ship-${size}-${orientation}.png`;
   }
 
   onPress() {

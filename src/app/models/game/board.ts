@@ -148,4 +148,27 @@ export class Board {
     }
     return true;
   }
+
+  public getRotationOfCoords(positions: Attack[]): Rotation | null {
+    if (positions.length < 2) return null;
+
+    const sortedByY = [...positions].sort((a, b) => a.y - b.y);
+    const sortedByX = [...positions].sort((a, b) => a.x - b.x);
+
+    const allSameX = positions.every(pos => pos.x === positions[0].x);
+    const allSameY = positions.every(pos => pos.y === positions[0].y);
+
+    const isSequential = (nums: number[]) =>
+      nums.every((val, i, arr) => i === 0 || val === arr[i - 1] + 1);
+
+    if (allSameX && isSequential(sortedByY.map(p => p.y))) {
+      return Rotation.horizontal;
+    }
+
+    if (allSameY && isSequential(sortedByX.map(p => p.x))) {
+      return Rotation.vertical;
+    }
+
+    return null;
+  }
 }
