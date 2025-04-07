@@ -7,15 +7,14 @@ import {
 } from '@components/connection/test-connection-service/test-connection-service.component';
 import {PhpConnectionComponent} from '@components/connection/php-connection/php-connection.component';
 import {GameComponent} from '@components/game/game.component';
-import {LandigPageComponent} from '@components/pages/landig-page/landig-page.component';
-import {TestGameSaveComponent} from '@components/connection/test-game-save/test-game-save.component';
+
 
 
 export const routes: Routes = [
 
-  { path: '', component: GameComponent },
-  { path: 'sql-tester', component: SqlTesterComponent },
-  { path: 'sql', component: PhpConnectionComponent },
+  { path: '', component: StartConnectionComponent },
+  { path: 'sql', component: SqlTesterComponent },
+  { path: 'sql-tester', component: PhpConnectionComponent },
   { path: 'gamecomponent', component: GameComponent },
   { path: 'connect', component: TestConnectionServiceComponent },
   { path: '**', redirectTo: '/404'},

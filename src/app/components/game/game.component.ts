@@ -11,7 +11,7 @@ import {GameService} from '@services/game-service/game.service';
   imports: [
     GameBoardComponent,
     PlayerStatsComponent,
-    TestConnectionServiceComponent
+
   ],
   templateUrl: './game.component.html'
 })

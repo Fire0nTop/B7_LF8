@@ -7,9 +7,15 @@
       <p>{{placedShipId()}}</p>
     } @else {
       <div class="relative w-full h-full overflow-visible">
-        <img src="game-resources/default/water.gif" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Water"/>
-        <img src="" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Boat"/>
-        <img [hidden]="status() !== CellStatus.destroyed" src="game-resources/tom/hit.png" class="absolute top-0 left-0 w-full h-full object-fill"  alt="Hit Marker"/>
+        <img src="assets/game/water.gif" class="absolute top-0 left-0 w-full h-full object-fill" alt="Water"/>
+        @if (isShip()) {
+          <img [src]="shipImagePath()"
+               class="absolute top-0 left-0 w-full h-full object-fill"
+               [class.rotate-90]="!isHorizontal()"
+               alt="{{content()?.shipName}}"/>
+        }
+        <img [hidden]="status() !== CellStatus.destroyed" src="assets/game/hit.png"
+             class="absolute top-0 left-0 w-full h-full object-fill" alt="Hit Marker"/>
       </div>
     }
   </div>
