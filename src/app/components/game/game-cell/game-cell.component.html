@@ -1,21 +1,33 @@
 <button (click)="onPress()" class="h-full aspect-square border-2 border-border group-hover:border-foreground duration-300">
   <div class="h-full w-full opacity-30 hover:bg-primary">
     @if (gameService.isDebugging()) {
-      <p>{{X + "-" + Y}}</p>
-      <p>{{CellStatus[status()]}}</p>
-      <p>{{content()?.shipName}}</p>
-      <p>{{placedShipId()}}</p>
+      <p>{{ X + "-" + Y }}</p>
+      <p>{{ CellStatus[status()] }}</p>
+      <p>{{ content()?.shipName }}</p>
+      <p>{{ placedShipId() }}</p>
     } @else {
       <div class="relative w-full h-full overflow-visible">
-        <img src="assets/game/water.gif" class="absolute top-0 left-0 w-full h-full object-fill" alt="Water"/>
-        @if (isShip()) {
-          <img [src]="shipImagePath()"
-               class="absolute top-0 left-0 w-full h-full object-fill"
-               [class.rotate-90]="!isHorizontal()"
-               alt="{{content()?.shipName}}"/>
-        }
-        <img [hidden]="status() !== CellStatus.destroyed" src="assets/game/hit.png"
-             class="absolute top-0 left-0 w-full h-full object-fill" alt="Hit Marker"/>
+        <img
+          [src]="resourceService.getWaterImgSource()"
+          class="absolute top-0 left-0 w-full h-full object-fill z-10"
+          alt="Water"/>
+
+        <!-- Ship image, aligned top-left and ensures it's filling and not centered -->
+        <img
+          [src]="shipSrc()"
+          [hidden]="shipSrc() == ''"
+          class="absolute top-0 left-0 w-auto h-auto object-cover max-w-fit z-20"
+          alt="{{ content()?.shipName }}"
+          style="min-width: 100%; min-height: 100%;"
+        />
+
+        <!-- Hit marker -->
+        <img
+          [hidden]="status() !== CellStatus.destroyed"
+          [src]="resourceService.getHitImgSource()"
+          class="absolute top-0 left-0 w-full h-full object-fill z-30"
+          alt="Hit Marker"/>
+
       </div>
     }
   </div>

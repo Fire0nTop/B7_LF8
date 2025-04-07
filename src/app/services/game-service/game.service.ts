@@ -33,8 +33,7 @@ export class GameService {
 
   public readonly isDebugging = signal<boolean>(true)
 
-  constructor(    public databaseService: DatabaseService,
-                  private router: Router) {
+  constructor(public databaseService: DatabaseService) {
     this.board = new Board(Board.BOARD_SIZE, Board.BOARD_SIZE);
     databaseService.getAllShips().subscribe(value => this.ships.set(value))
     toObservable(this.isAttacking).subscribe(value => console.log("isAttacking", value))
@@ -162,18 +161,9 @@ export class GameService {
   }
 
   gameOver(winner: string) {
-    this.isAttacking.set(false);
-
-    // Navigiere zur Gewinnerseite mit der UUID als Parameter
-    this.router.navigate(['/winner', winner], {
-      state: {
-        round: this.round(),
-        winnerId: winner,
-        destroyedShips: Array.from(this.destroyedShips().values())
-      }
-    });
+    this.isAttacking.set(false)
+    //TODO: add navigate to winner page. winner = uuid form winner
   }
-
 
   private getPlayerByUserName(userName: string) {
     return new Promise<number>(resolve => {
