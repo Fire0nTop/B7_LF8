@@ -4,6 +4,7 @@ import {Spiel} from '@models/Spiel';
 import {SchiffPosition} from '@models/SchiffPosition';
 import {Zug} from '@models/Zug';
 import {Spieler} from '@models/Spieler';
+import {data} from 'autoprefixer';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +25,13 @@ export class MapperService {
 
    mapToSchiffPosition(data: any): SchiffPosition {
     return {
+      spielerId: data.spielerId,
       schiffPositionId: data.schiff_position_id,
       schiffId: data.schiff_id,
       spielId: data.spiel_id,
       positionX: data.position_x,
       positionY: data.position_y,
-      zerstört: data.zerstört === 1
+      zerstoert: data.zerstoert === 1
     };
   }
 

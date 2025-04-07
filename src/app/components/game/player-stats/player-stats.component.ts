@@ -12,12 +12,15 @@ import {Rotation} from '@models/game';
 export class PlayerStatsComponent {
   left = input.required<boolean>()
   other = input.required<boolean>()
-  constructor(protected connectionService: ConnectionService, protected gameService: GameService) {}
+  protected readonly Rotation = Rotation;
+
+  constructor(protected connectionService: ConnectionService, protected gameService: GameService) {
+  }
 
   getUuid() {
     if (this.other()) {
       return this.connectionService.connectedPeerId()
-    }else {
+    } else {
       return this.connectionService.peerId()
     }
   }
@@ -25,7 +28,7 @@ export class PlayerStatsComponent {
   getUsername() {
     if (this.other()) {
       return this.connectionService.otherUsername() ? this.connectionService.otherUsername() : "Opponent"
-    }else {
+    } else {
       return this.connectionService.username() ? this.connectionService.username() : "You"
     }
   }
@@ -38,5 +41,21 @@ export class PlayerStatsComponent {
     this.gameService.selectedRotation.update(value => {
       return value === Rotation.horizontal ? Rotation.vertical : Rotation.horizontal;
     })
+  }
+
+  switchRemoveActive() {
+    this.gameService.isRemoving.update(value => !value)
+  }
+
+  switchIsAttacking() {
+    this.gameService.isAttacking.update(value => !value)
+  }
+
+  switchReady() {
+    this.connectionService.sendReady(!this.connectionService.isReady())
+  }
+
+  switchDebugmode() {
+    this.gameService.isDebugging.update(value => !value)
   }
 }

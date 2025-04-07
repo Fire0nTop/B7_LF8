@@ -59,7 +59,7 @@ export class TestConnectionServiceComponent {
     })
 
     this.connectionService.onAttackResultReceived.subscribe((data) => {
-      this.receivedAttackResult.set(AttackResult[data]);
+      this.receivedAttackResult.set(AttackResult[data.attackResult]);
     })
   }
 }

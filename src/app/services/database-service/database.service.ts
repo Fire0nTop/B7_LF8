@@ -24,7 +24,7 @@ export class DatabaseService {
     return this.http.post(environment.apiUrl + environment.dbUrl, body.toString(), {headers}).pipe(
       catchError(error => {
         console.error('HTTP Error:', error);
-        return throwError(() => 'Database request failed');
+        return throwError(() => new Error('Database request failed'));
       })
     )
   }
@@ -43,6 +43,22 @@ export class DatabaseService {
     );
   }
 
+  getPlayerById(id: number) {
+    return this.executeQuery(`SELECT *
+                              FROM spieler
+                              WHERE spieler_id = ${id}`).pipe(
+      map(response => response.records?.length ? this.mapper.mapToSpieler(response.records[0]) : null)
+    );
+  }
+
+  getPlayerByUsername(username: string) {
+    return this.executeQuery(`SELECT *
+                              FROM spieler
+                              WHERE user_name = '${username}'`).pipe(
+      map(response => response.records?.length ? this.mapper.mapToSpieler(response.records[0]) : null)
+    );
+  }
+
   createShip(schiff: Ship) {
     return this.executeQuery(`
       INSERT INTO schiff (schiff_name, horizontal_groesse, vertikal_groesse, schiff_anzahl)
@@ -52,7 +68,7 @@ export class DatabaseService {
     );
   }
 
-  createGame(spiel: Spiel) {
+  createGame() {
     return this.executeQuery(`
       INSERT INTO spiel (startzeit)
       VALUES (CURRENT_TIMESTAMP);
@@ -83,6 +99,28 @@ export class DatabaseService {
     );
   }
 
+  saveShipPosition(position: SchiffPosition) {
+    return this.executeQuery(`
+    INSERT INTO schiff_position (
+      schiff_id, spiel_id, spieler_id, position_x, position_y, zerstört
+    )
+    VALUES (
+      ${position.schiffId},
+      ${position.spielId},
+      ${position.spielerId},
+      ${position.positionX},
+      ${position.positionY},
+      ${position.zerstoert ? 1 : 0}
+    );
+  `).pipe(
+      take(1),
+      tap(response => {
+        console.log('Response from saveShipPosition:', response);
+      }),
+      map(response => response.inserted_id ? response.inserted_id : null)
+    );
+  }
+
   getShipPositionsByGameId(spielId: number) {
     return this.executeQuery(`SELECT *
                               FROM schiff_position
@@ -93,7 +131,7 @@ export class DatabaseService {
 
   saveMove(zug: Zug) {
     return this.executeQuery(`
-      INSERT INTO zug (kordinate_x, kordinate_y, treffer, runde, spieler, spiel_id)
+      INSERT INTO zug (kordinate_x, kordinate_y, treffer, runde, spieler_id, spiel_id)
       VALUES (${zug.kordinateX}, ${zug.kordinateY}, ${zug.treffer ? 1 : 0}, ${zug.runde}, ${zug.spielerId},
               ${zug.spielId});
     `).pipe(

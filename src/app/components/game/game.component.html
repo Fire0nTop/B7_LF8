@@ -1,6 +1,9 @@
 <div class="flex w-full justify-between">
   <app-player-stats [left]="true" [other]="false"></app-player-stats>
-  <app-game-board></app-game-board>
+  <div class="flex flex-col">
+    <p>Round: {{gameService.round()}}</p> <!--TODO: make beautifully-->
+    <app-game-board></app-game-board>
+  </div>
   <app-player-stats [left]="false" [other]="true"></app-player-stats>
 </div>
 <app-test-connection-service></app-test-connection-service>

@@ -17,7 +17,7 @@ export class GameCellComponent implements OnInit {
   public readonly status = signal<CellStatus>(CellStatus.empty)
   public readonly placedShipId = signal<number|null>(null)
 
-  constructor(public gameService: GameService) {}
+  constructor(public gameService: GameService,) {}
 
   ngOnInit(): void {
     this.gameService.board.board.subscribe(board => {
@@ -28,10 +28,13 @@ export class GameCellComponent implements OnInit {
   }
 
   onPress() {
-    console.log('onPress', this.gameService.selectedShip());
     const ship = this.gameService.selectedShip();
     if (ship) {
-      this.gameService.board.placeShip(ship,this.X,this.Y,this.gameService.selectedRotation())
+      if (this.gameService.isRemoving()) {
+        this.gameService.board.removeShip(this.X,this.Y);
+      } else {
+        this.gameService.board.placeShip(ship,this.X,this.Y,this.gameService.selectedRotation())
+      }
     }
   }
 
