@@ -3,10 +3,13 @@ import {ConnectionService} from '@services/connection-serivce/connection.service
 import {GameService} from '@services/game-service/game.service';
 import {Ship} from '@models/ship';
 import {Rotation} from '@models/game';
+import {SlicePipe} from '@angular/common';
 
 @Component({
   selector: 'app-player-stats',
-  imports: [],
+  imports: [
+    SlicePipe
+  ],
   templateUrl: './player-stats.component.html'
 })
 export class PlayerStatsComponent {
@@ -58,4 +61,6 @@ export class PlayerStatsComponent {
   switchDebugmode() {
     this.gameService.isDebugging.update(value => !value)
   }
+
+  protected readonly Ship = Ship;
 }
