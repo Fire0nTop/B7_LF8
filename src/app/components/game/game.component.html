@@ -4,30 +4,38 @@
   <div class="flex flex-col items-center">
     <!-- Round Display -->
     <div class="mb-4">
-      <div class="bg-navy-700 px-6 py-2 rounded-full border border-navy-500 shadow-lg relative overflow-hidden">
+      <div class="bg-gray-900 px-6 py-2 rounded-full border border-[#C0C0C0] shadow-lg shadow-[#00FFFF]/30 relative overflow-hidden">
         <!-- Hintergrund-Animation -->
-        <div class="absolute inset-0 bg-[conic-gradient(from_var(--angle),transparent_20%,#0891b250_50%,transparent_80%)] animate-spin-slow opacity-30"></div>
+        <div class="absolute inset-0 bg-[conic-gradient(from_var(--angle),transparent_20%,#00FFFF60_50%,transparent_80%)] animate-spin-slow opacity-40"></div>
 
         <div class="flex items-center gap-2 relative z-10">
-          <!-- Pulsierender Punkt mit verbesserter Animation -->
-          <div class="h-3 w-3 bg-cyan-500 rounded-full animate-[pulse_1.5s_ease-in-out_infinite]"></div>
+          <!-- Pulsierender Punkt -->
+          <div class="h-3 w-3 bg-[#00FFFF] rounded-full animate-[pulse_1.5s_ease-in-out_infinite]"></div>
 
           <!-- Text mit gleitendem Gradient -->
-          <p class="text-lg font-bold text-transparent bg-gradient-to-r from-cyan-400 via-navy-200 to-cyan-400 bg-clip-text bg-[length:200%] animate-text-gradient">
-            BATTLE ROUND <span class="text-cyan-400 animate-glitch">{{ gameService.round() }}</span>
+          <p class="text-lg font-bold text-transparent bg-gradient-to-r from-[#00FFFF] via-[#C0C0C0] to-[#00FFFF] bg-clip-text bg-[length:200%] animate-text-gradient">
+            BATTLE ROUND <span class="text-[#00FFFF] animate-glitch">{{ gameService.round() }}</span>
           </p>
         </div>
       </div>
 
       <!-- Unterstreichung mit fließendem Gradient -->
-      <div class="h-1 w-24 bg-gradient-to-r from-navy-700 via-cyan-500 to-navy-700 mt-1 rounded-full animate-line-flow"></div>
+      <div class="h-1 w-24 bg-gradient-to-r from-[#C0C0C0] via-[#00FFFF] to-[#C0C0C0] mt-1 rounded-full animate-line-flow"></div>
     </div>
 
     <!-- Global Styles für die Animationen -->
     <style>
       @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.2); opacity: 0.7; }
+        0%, 100% {
+          transform: scale(1);
+          opacity: 1;
+          box-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.8;
+          box-shadow: 0 0 15px #00FFFF, 0 0 25px #00FFFF;
+        }
       }
 
       @keyframes text-gradient {
