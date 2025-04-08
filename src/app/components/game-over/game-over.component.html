@@ -45,7 +45,7 @@
       >
 
       <button
-        (click)="connectionService.sendGameDataViaEmail()"
+        (click)="sendGameDataViaEmail()"
         [disabled]="userEmail === ''"
         [class.opacity-70]="userEmail === ''"
         class="w-full p-3 rounded-lg font-bold transition-colors hover:bg-opacity-90 shadow-lg border-border border"

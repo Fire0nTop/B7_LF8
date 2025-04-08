@@ -19,4 +19,9 @@ export class GameOverComponent {
   navigateToStart() {
     this.router.navigate(['/']);
   }
+
+  sendGameDataViaEmail() {
+    this.userEmail
+    //TODO: Email versand einbinden
+  }
 }

@@ -287,8 +287,4 @@ export class ConnectionService {
       saveGame: await this.gameService.getGameSave(this.username())
     })
   }
-
-  sendGameDataViaEmail() {
-    //TODO: Email versand einbinden
-  }
 }
