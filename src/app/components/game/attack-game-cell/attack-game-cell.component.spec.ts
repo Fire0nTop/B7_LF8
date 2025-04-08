@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AttackGameCellComponent } from './attack-game-cell.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('AttackGameCellComponent', () => {
   let component: AttackGameCellComponent;
@@ -8,7 +9,7 @@ describe('AttackGameCellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AttackGameCellComponent]
+      imports: [AttackGameCellComponent,HttpClientTestingModule]
     })
     .compileComponents();
 

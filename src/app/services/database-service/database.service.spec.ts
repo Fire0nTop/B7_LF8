@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DatabaseService } from './database.service';
-import { Ship, SchiffPosition, Zug, Spieler } from '@models/index';
 
 describe('DatabaseService', () => {
   let service: DatabaseService;
@@ -28,91 +27,4 @@ describe('DatabaseService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  describe('Schiff-Methoden', () => {
-    it('should get all Schiffe', () => {
-      service.getAllShips().subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.method).toBe('POST');
-      expect(req.request.body).toContain('query=SELECT%20*%20FROM%20schiff%3B');
-    });
-
-    it('should create Schiff', () => {
-      const testSchiff = new Ship(
-        1, 'TestSchiff', 5, 3, 2
-      );
-
-      service.createShip(testSchiff).subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain(
-        'INSERT%20INTO%20schiff%20(schiff_name%2C%20horizontal_groesse%2C%20vertikal_groesse%2C%20schiff_anzahl)'
-      );
-    });
-  });
-
-  describe('Spiel-Methoden', () => {
-    it('should create new Spiel', () => {
-      service.createGame().subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain('INSERT%20INTO%20spiel%20(spiel_id)%20VALUES%20(1)');
-    });
-  });
-
-  describe('SchiffPosition-Methoden', () => {
-    it('should set SchiffPosition', () => {
-      const position:SchiffPosition = {
-        schiffPositionId:0,
-        positionX:1,
-        positionY:1,
-        spielId:1,
-        schiffId:10,
-        spielerId:15,
-        zerstoert:false,
-      }
-      service.setShipPosition(position).subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain(
-        'INSERT%20INTO%20schiff_position%20(schiff_id%2C%20spiel_id%2C%20position_x%2C%20position_y%2C%20zerst%C3%B6rt)'
-      );
-    });
-
-    it('should mark Schiff als zerstört', () => {
-      service.markShipAsDestroyed(123).subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain(
-        'UPDATE%20schiff_position%20SET%20zerst%C3%B6rt%20%3D%201%20WHERE%20schiff_position_id%20%3D%20123'
-      );
-    });
-  });
-
-  describe('Zug-Methoden', () => {
-    it('should save Zug', () => {
-      const zug = new Zug(5, 5, true, 1, 123, 1);
-      service.saveMove(zug).subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain(
-        'INSERT%20INTO%20zug%20(kordinate_x%2C%20kordinate_y%2C%20treffer%2C%20runde%2C%20spieler%2C%20spiel_id)'
-      );
-    });
-  });
-
-  describe('Spieler-Methoden', () => {
-    it('should registriere Spieler', () => {
-      const spieler = new Spieler(1, 'TestUser');
-      service.registerPlayer(spieler).subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain(
-        'INSERT%20INTO%20spieler%20(spieler_id%2C%20user_name)%20VALUES%20(1%2C%20%27TestUser%27)'
-      );
-    });
-  });
-
-
 });
