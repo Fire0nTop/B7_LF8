@@ -57,6 +57,26 @@ export class MapperService {
     };
   }
 
+  mapToAverageRounds(data: any): number {
+    return data.durchschnittliche_Rundenanzahl ?? 0;
+  }
 
+  mapToTotalGames(data: any): number {
+    return data.spieleanzahl ?? 0;
+  }
 
+  mapToFirstHitShip(data: any): { schiffId: number, schiffName: string, avgRundeErsterTreffer: number } {
+    return {
+      schiffId: data.schiff_id,
+      schiffName: data.schiff_name,
+      avgRundeErsterTreffer: data.avg_runde_erster_treffer
+    };
+  }
+
+  mapToLongestCombo(data: any): { playerName: string, longestCombo: number } {
+    return {
+      playerName: data.player_name,
+      longestCombo: data.longest_combo
+    };
+  }
 }

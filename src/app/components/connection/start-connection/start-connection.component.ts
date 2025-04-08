@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ConnectionService} from '@services/connection-serivce/connection.service';
 import {toObservable} from '@angular/core/rxjs-interop';
+import {routes} from '../../../app.routes';
 
 @Component({
   selector: 'app-start-connection',
@@ -21,7 +22,7 @@ export class StartConnectionComponent implements OnInit {
   public readonly otherUsername = signal<string>("")
   constructor(
     public connectionService: ConnectionService,
-    private router: Router
+    protected router: Router
   ) {
 
     toObservable(this.connectionService.isConnected).subscribe(isConnected => {
@@ -65,4 +66,6 @@ export class StartConnectionComponent implements OnInit {
       window.location.reload()
     }
   }
+
+  protected readonly routes = routes;
 }

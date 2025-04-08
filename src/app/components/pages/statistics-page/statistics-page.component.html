@@ -1,0 +1,43 @@
+<div class="font-sans w-svw h-svh flex justify-center items-center">
+  <div class="flex h-max flex-col gap-4 justify-center border border-border m-4 p-4 rounded-lg w-2/3">
+    <div class="flex justify-between content-center">
+      <p class="text-3xl font-bold underline flex items-center">Spiel Statistiken</p>
+      <button
+        class="p-4 rounded bg-secondary text-secondary-foreground hover:bg-secondary/80 uppercase font-bold"
+        (click)="fetchData()"
+      >Daten neu laden
+      </button>
+    </div>
+    <div class="p-3 border-2 border-border bg-secondary rounded">
+      <p class="text-sm text-muted-foreground">durchschnittliche Rundenanzahl: </p>
+      <p class="text-xl font-bold">{{ averageRounds()}}</p>
+    </div>
+
+    <div class="p-3 border-2 border-border bg-secondary rounded">
+      <p class="text-sm text-muted-foreground">Anzahl der gespeicherten Spiele: </p>
+      <p class="text-xl font-bold">{{ totalGames()}}</p>
+    </div>
+
+    <div class="p-3 border-2 border-border bg-secondary rounded">
+      <p class="text-sm text-muted-foreground">Welches Schiff wird meinstens zuerst getroffen: </p>
+      <p class="text-xl font-bold">
+        {{ firstHitShip()?.schiffName }} wird durchschnitt zuerst in Runde {{ firstHitShip()?.avgRundeErsterTreffer }} getroffen.
+      </p>
+    </div>
+
+    <div class="p-3 border-2 border-border bg-secondary rounded">
+      <p class="text-sm text-muted-foreground">Top 5 Spieler mit der längsten Combo: </p>
+      <div class="flex flex-col gap-4 text-xl font-bold">
+        @for (spieler of longestCombos(); track spieler.playerName; let index = $index) {
+          <p>{{index + 1}} - {{spieler.playerName}} mit einer Combo von: {{spieler.longestCombo}}</p>
+        }
+      </div>
+    </div>
+    <button
+      class="w-full p-4 bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded uppercase font-bold"
+      (click)="router.navigate([''])"
+    >
+      Zurück zur Startseite
+    </button>
+  </div>
+</div>
