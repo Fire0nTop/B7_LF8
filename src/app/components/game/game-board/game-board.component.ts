@@ -1,9 +1,8 @@
-import {Component, signal} from '@angular/core';
+import {Component} from '@angular/core';
 import {GameCellComponent} from '../game-cell/game-cell.component';
 import {Board} from '@models/game';
 import {AttackGameCellComponent} from '@components/game/attack-game-cell/attack-game-cell.component';
 import {GameService} from '@services/game-service/game.service';
-import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-game-board',

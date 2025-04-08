@@ -86,7 +86,7 @@ export class ConnectionService {
     });
   }
   public sendUsername(): Promise<string> {
-    let username = this.username();
+    const username = this.username();
     return new Promise<string>((resolve) => {
       this.peerService.sendData({type: MessageType.Username, username});
 

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DatabaseService } from './database.service';
-import { Ship, SchiffPosition, Spiel, Zug, Spieler } from '@models/index';
+import { Ship, SchiffPosition, Zug, Spieler } from '@models/index';
 
 describe('DatabaseService', () => {
   let service: DatabaseService;

@@ -2,7 +2,6 @@ import {Component, ElementRef, OnInit, signal, ViewChild} from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ConnectionService} from '@services/connection-serivce/connection.service';
-import {async} from 'rxjs';
 import {toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
@@ -15,7 +14,7 @@ import {toObservable} from '@angular/core/rxjs-interop';
   styleUrls: ['./start-connection.component.scss']
 })
 export class StartConnectionComponent implements OnInit {
-  usernameInput: string = '';
+  usernameInput = '';
 
   @ViewChild('connectionSection') connectionSection!: ElementRef;
 

@@ -8,8 +8,6 @@ export class PhpMailServiceService {
 
   readonly EMAIL_ENDPOINT = environment.apiUrl + environment.dbUrl;
 
-  constructor() { }
-
   async sendEmail(email: string, subject: string, message: string): Promise<{ success: boolean, message: string }> {
 
     try {

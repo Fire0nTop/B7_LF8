@@ -13,7 +13,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   templateUrl: 'game-over.component.html',
 })
 export class GameOverComponent {
-  userEmail: string = '';
+  userEmail = '';
   constructor(public gameService: GameService,public connectionService: ConnectionService,public router: Router) {}
 
   navigateToStart() {

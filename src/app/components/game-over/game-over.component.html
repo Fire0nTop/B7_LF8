@@ -2,13 +2,13 @@
   <div class="flex h-max flex-col gap-4 justify-center border border-border m-4 p-4 rounded-lg w-2/3">
     <p class="text-3xl font-bold underline">Spiel statistiken</p>
     <div
-      [class.bg-green-700]="gameService.winnerUuid() == connectionService.peerId()"
-      [class.bg-destructive]="gameService.winnerUuid() == connectionService.connectedPeerId()"
-      [class.bg-secondary]="gameService.winnerUuid() == '' || !connectionService.isConnected()"
+      [class.bg-green-700]="gameService.winnerUuid() === connectionService.peerId()"
+      [class.bg-destructive]="gameService.winnerUuid() === connectionService.connectedPeerId()"
+      [class.bg-secondary]="gameService.winnerUuid() === '' || !connectionService.isConnected()"
       class="p-3 border-2 border-border rounded"
     >
       <p class="text-sm text-muted-foreground">Sieger: </p>
-      <p class="text-xl font-bold">{{ gameService.winnerUuid() == connectionService.peerId() ? connectionService.username() : connectionService.otherUsername() || 'Nicht Festgelegt' }}</p>
+      <p class="text-xl font-bold">{{ gameService.winnerUuid() === connectionService.peerId() ? connectionService.username() : connectionService.otherUsername() || 'Nicht Festgelegt' }}</p>
     </div>
     <div class="p-3 border-2 border-border bg-secondary rounded">
       <p class="text-sm text-muted-foreground">Runde: </p>
@@ -23,11 +23,11 @@
 
     <button
       (click)="connectionService.requestGameSave()"
-      [disabled]="connectionService.savedGameId() != ''"
-      [class.bg-muted]="connectionService.savedGameId() != ''"
+      [disabled]="connectionService.savedGameId() !== ''"
+      [class.bg-muted]="connectionService.savedGameId() !== ''"
       class="w-full p-3 rounded-lg font-bold transition-colors hover:bg-opacity-90 shadow-lg border-border border"
     >
-      {{connectionService.savedGameId() == '' ? 'Spiel Speichern' : 'Spiel Gespeichert Id: '}} {{connectionService.savedGameId()}}
+      {{connectionService.savedGameId() === '' ? 'Spiel Speichern' : 'Spiel Gespeichert Id: '}} {{connectionService.savedGameId()}}
     </button>
 
     <div class="flex flex-col gap-4 mt-4">
@@ -46,8 +46,8 @@
 
       <button
         (click)="connectionService.sendGameDataViaEmail()"
-        [disabled]="userEmail == ''"
-        [class.opacity-70]="userEmail == ''"
+        [disabled]="userEmail === ''"
+        [class.opacity-70]="userEmail === ''"
         class="w-full p-3 rounded-lg font-bold transition-colors hover:bg-opacity-90 shadow-lg border-border border"
       >
         Spieldaten per Email versenden

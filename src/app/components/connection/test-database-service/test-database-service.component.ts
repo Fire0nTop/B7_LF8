@@ -34,7 +34,7 @@ export class TestDatabaseServiceComponent {
   spielerName = '';
   kordinateX: number | null = null;
   kordinateY: number | null = null;
-  treffer: boolean = false;
+  treffer = false;
   runde: number | null = null;
   spielerId: number | null = null;
 

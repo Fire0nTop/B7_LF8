@@ -17,7 +17,7 @@ export class Board {
   constructor(public sizeX: number, public sizeY: number) {
     const initialBoard: Cell[][] = [];
     for (let x = 0; x < sizeX; x++) {
-      let row: Cell[] = [];
+      const row: Cell[] = [];
       for (let y = 0; y < sizeY; y++) {
         row.push(new Cell());
       }

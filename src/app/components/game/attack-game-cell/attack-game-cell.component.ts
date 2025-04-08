@@ -1,6 +1,6 @@
 import { Component, Input, signal } from '@angular/core';
 import { ConnectionService } from '@services/connection-serivce/connection.service';
-import {Attack, AttackResult} from '@models/connection';
+import {AttackResult} from '@models/connection';
 import { Ship } from '@models/ship';
 import { GameService } from '@services/game-service/game.service';
 import {toObservable} from '@angular/core/rxjs-interop';
@@ -43,7 +43,7 @@ export class AttackGameCellComponent {
 
   onPress() {
     if (!this.attacked() && this.gameService.isAttacking() && this.gameService.round() > 0) {
-      this.connectionService.sendAttack({x: this.X, y: this.Y}).then(r => this.attacked.set(true))
+      this.connectionService.sendAttack({x: this.X, y: this.Y}).then(() => this.attacked.set(true))
     }
   }
 

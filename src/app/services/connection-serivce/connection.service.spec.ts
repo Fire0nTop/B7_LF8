@@ -3,7 +3,7 @@ import { ConnectionService } from './connection.service';
 import { PeerService } from '../peer-service/peer-service.service';
 import { GameService } from '@services/game-service/game.service';
 import { AttackResult } from '@models/index';
-import { Subject, of } from 'rxjs';
+import { Subject } from 'rxjs';
 import { signal } from '@angular/core';
 import {MessageType} from '@models/connection/message-types';
 
@@ -50,7 +50,6 @@ class MockGameService {
 describe('ConnectionService', () => {
   let service: ConnectionService;
   let peerService: MockPeerService;
-  let gameService: MockGameService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -63,7 +62,6 @@ describe('ConnectionService', () => {
 
     service = TestBed.inject(ConnectionService);
     peerService = TestBed.inject(PeerService) as unknown as MockPeerService;
-    gameService = TestBed.inject(GameService) as unknown as MockGameService;
   });
 
   it('should be created', () => {
