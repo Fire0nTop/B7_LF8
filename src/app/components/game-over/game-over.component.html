@@ -1,0 +1,58 @@
+<div class="font-sans w-svw h-svh flex justify-center items-center">
+  <div class="flex h-max flex-col gap-4 justify-center border border-border m-4 p-4 rounded-lg w-2/3">
+    <p class="text-3xl font-bold underline">Spiel statistiken</p>
+    <div
+      [class.bg-green-700]="gameService.winnerUuid() == connectionService.peerId()"
+      [class.bg-destructive]="gameService.winnerUuid() == connectionService.connectedPeerId()"
+      [class.bg-secondary]="gameService.winnerUuid() == '' || !connectionService.isConnected()"
+      class="p-3 border-2 border-border rounded"
+    >
+      <p class="text-sm text-muted-foreground">Sieger: </p>
+      <p class="text-xl font-bold">{{ gameService.winnerUuid() == connectionService.peerId() ? connectionService.username() : connectionService.otherUsername() || 'Nicht Festgelegt' }}</p>
+    </div>
+    <div class="p-3 border-2 border-border bg-secondary rounded">
+      <p class="text-sm text-muted-foreground">Runde: </p>
+      <p class="text-xl font-bold">{{ gameService.round() }}</p>
+    </div>
+
+    <button
+      (click)="navigateToStart()"
+      class="w-full p-3 rounded-lg font-bold transition-colors hover:bg-opacity-90 shadow-lg border-border bg-green-700 border"
+    >Neues Spiel
+    </button>
+
+    <button
+      (click)="connectionService.requestGameSave()"
+      [disabled]="connectionService.savedGameId() != ''"
+      [class.bg-muted]="connectionService.savedGameId() != ''"
+      class="w-full p-3 rounded-lg font-bold transition-colors hover:bg-opacity-90 shadow-lg border-border border"
+    >
+      {{connectionService.savedGameId() == '' ? 'Spiel Speichern' : 'Spiel Gespeichert Id: '}} {{connectionService.savedGameId()}}
+    </button>
+
+    <div class="flex flex-col gap-4 mt-4">
+      <p class="text-xl">Sende dir die Spieldaten direkt per Email zu.</p>
+
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="userEmail"
+        required
+        placeholder="Email eingeben"
+        class="w-full p-2 border-2 border-input bg-card text-foreground rounded"
+        maxlength="12"
+        title="Email eingeben"
+      >
+
+      <button
+        (click)="connectionService.sendGameDataViaEmail()"
+        [disabled]="userEmail == ''"
+        [class.opacity-70]="userEmail == ''"
+        class="w-full p-3 rounded-lg font-bold transition-colors hover:bg-opacity-90 shadow-lg border-border border"
+      >
+        Spieldaten per Email versenden
+      </button>
+    </div>
+  </div>
+
+</div>
