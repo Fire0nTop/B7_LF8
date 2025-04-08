@@ -39,8 +39,8 @@ jobs:
         run: |
           npm ci
           npm run build
+          npm run lint
         # npm run test
-        # npm run lint
 
 # Please do not touch the following action
       - name: Store deployment content
