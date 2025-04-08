@@ -1,3 +1,7 @@
+// src/environments/environment.test.ts
 export const environment = {
-  apiUrl: 'http://mock-api' // oder deine Test-URL
+  production: false,
+  apiUrl: 'https://voidtalk.com',
+  dbUrl: '/B7_LF8/sql.php',
+  email: '/B7_LF8/send_email.php'
 };

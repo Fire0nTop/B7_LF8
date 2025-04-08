@@ -31,7 +31,7 @@ export class ConnectionService {
     takeUntilDestroyed(this.destroyRef)
   );
 
-  constructor(private peerService: PeerService, private gameService: GameService) {
+  constructor(private peerService: PeerService, public gameService: GameService) {
     this.listenForMessages();
     this.onAttackResultReceived.subscribe((data) => {
       console.log("data", data);
