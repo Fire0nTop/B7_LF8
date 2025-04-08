@@ -10,18 +10,18 @@
     </div>
     <div class="p-3 border-2 border-border bg-secondary rounded">
       <p class="text-sm text-muted-foreground">durchschnittliche Rundenanzahl: </p>
-      <p class="text-xl font-bold">{{ averageRounds()}}</p>
+      <p class="text-xl font-bold">{{ averageRounds() | number:'1.0-2' }}</p>
     </div>
 
     <div class="p-3 border-2 border-border bg-secondary rounded">
       <p class="text-sm text-muted-foreground">Anzahl der gespeicherten Spiele: </p>
-      <p class="text-xl font-bold">{{ totalGames()}}</p>
+      <p class="text-xl font-bold">{{ totalGames() | number:'1.0-2' }}</p>
     </div>
 
     <div class="p-3 border-2 border-border bg-secondary rounded">
       <p class="text-sm text-muted-foreground">Welches Schiff wird meinstens zuerst getroffen: </p>
       <p class="text-xl font-bold">
-        {{ firstHitShip()?.schiffName }} wird durchschnitt zuerst in Runde {{ firstHitShip()?.avgRundeErsterTreffer }} getroffen.
+        {{ firstHitShip()?.schiffName }} wird durchschnitt zuerst in Runde {{ firstHitShip()?.avgRundeErsterTreffer | number:'1.0-2'  }} getroffen.
       </p>
     </div>
 
@@ -29,7 +29,7 @@
       <p class="text-sm text-muted-foreground">Top 5 Spieler mit der längsten Combo: </p>
       <div class="flex flex-col gap-4 text-xl font-bold">
         @for (spieler of longestCombos(); track spieler.playerName; let index = $index) {
-          <p>{{index + 1}} - {{spieler.playerName}} mit einer Combo von: {{spieler.longestCombo}}</p>
+          <p>{{index + 1}} - {{spieler.playerName}} mit einer Combo von: {{spieler.longestCombo  | number:'1.0-2' }}</p>
         }
       </div>
     </div>

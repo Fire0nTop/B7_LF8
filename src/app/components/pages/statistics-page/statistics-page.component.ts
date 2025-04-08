@@ -2,11 +2,13 @@ import {Component, OnInit, signal} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {DatabaseService} from '@services/database-service/database.service';
 import {Router} from '@angular/router';
+import {DecimalPipe} from '@angular/common';
 
 @Component({
   selector: 'app-statistics-page',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DecimalPipe
   ],
   templateUrl: './statistics-page.component.html',
 })
