@@ -24,7 +24,11 @@
         <!-- Hit marker -->
         <img
           [hidden]="!attacked()"
-          [src]="resourceService.getHitImgSource()"
+          [src]="resourceService.getHitImgSource(result())"
+          [class.opacity-35]="result() == AttackResult.Miss"
+          [class.opacity-75]="result() == AttackResult.Sunk"
+          [class.mix-blend-screen]="result() != AttackResult.Hit"
+
           class="absolute top-0 left-0 w-full h-full object-fill z-30"
           alt="Hit Marker"/>
       </div>

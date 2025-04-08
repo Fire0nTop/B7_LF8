@@ -17,11 +17,5 @@ export class GameBoardComponent {
   protected readonly String = String;
   public board = new Board(Board.BOARD_SIZE,Board.BOARD_SIZE)
 
-  public attackBoard = signal(false)
-
-  constructor(protected gameService: GameService) {
-    toObservable(gameService.isAttacking).subscribe(isAttacking => {
-      this.attackBoard.set(isAttacking);
-    })
-  }
+  constructor(protected gameService: GameService) {}
 }

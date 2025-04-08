@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Cell, Rotation} from '@models/game';
 import {GameService} from '@services/game-service/game.service';
 import {Ship} from '@models/ship';
-import {Attack} from '@models/connection';
+import {Attack, AttackResult} from '@models/connection';
 
 @Injectable({
   providedIn: 'root'
@@ -43,14 +43,27 @@ export class ResourceService {
     const size = (ship.verticalSize * ship.horizontalSize).toString()
     const direction = (rotation === Rotation.horizontal ? 'h' : 'v')
     console.log(direction)
-    return `${this.RESOURCE_PATH}/${this.PACK_NAME}/ship-${size}-${direction}.png`
+    if (this.PACK_NAME == 'tom') {
+      return `${this.RESOURCE_PATH}/${this.PACK_NAME}/ship-${size}-${direction}.png`
+    }else {
+      return `${this.RESOURCE_PATH}/${this.PACK_NAME}/ship-${size}-${direction}.svg`
+    }
   }
 
   public getWaterImgSource() {
     return `${this.RESOURCE_PATH}/${this.PACK_NAME}/water.gif`
   }
 
-  public getHitImgSource() {
-    return `${this.RESOURCE_PATH}/${this.PACK_NAME}/hit.png`
+  public getHitImgSource(attackResult:AttackResult | null) {
+    switch (attackResult) {
+      case AttackResult.Hit:
+        return `${this.RESOURCE_PATH}/${this.PACK_NAME}/hit.png`
+      case AttackResult.Sunk:
+        return `${this.RESOURCE_PATH}/${this.PACK_NAME}/smoke.gif`
+      case AttackResult.Miss:
+        return `${this.RESOURCE_PATH}/${this.PACK_NAME}/miss.gif`
+      default:
+        return ''
+    }
   }
 }
