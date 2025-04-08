@@ -1,7 +1,7 @@
 import {environment} from '../../../environments/environment';
 import {Injectable} from '@angular/core';
 import {catchError, map, Observable, take, tap, throwError} from 'rxjs';
-import {SchiffPosition, Ship, Spiel, Spieler, Zug} from '@models/index';
+import {SchiffPosition, Ship, Spieler, Zug} from '@models/index';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {MapperService} from '@services/mapper-service/mapper.service';
 

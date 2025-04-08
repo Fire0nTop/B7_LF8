@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import {GameBoardComponent} from './game-board/game-board.component';
 import {PlayerStatsComponent} from './player-stats/player-stats.component';
-import {
-  TestConnectionServiceComponent
-} from '@components/connection/test-connection-service/test-connection-service.component';
 import {GameService} from '@services/game-service/game.service';
 
 @Component({

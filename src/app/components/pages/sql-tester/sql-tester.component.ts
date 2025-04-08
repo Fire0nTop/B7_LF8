@@ -18,9 +18,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class SqlTesterComponent {
   queryForm: FormGroup;
-  response: string = 'Results will appear here...';
-  error: string = '';
-  isLoading: boolean = false;
+  response = 'Results will appear here...';
+  error = '';
+  isLoading = false;
   readonly PHP_ENDPOINT = environment.apiUrl + environment.dbUrl;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {

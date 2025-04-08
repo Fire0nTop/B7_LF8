@@ -42,6 +42,7 @@ export class PeerService {
       return true;
     } catch (error) {
       this.connectionError.set('Failed to send data');
+      console.error(error);
       return false;
     }
   }

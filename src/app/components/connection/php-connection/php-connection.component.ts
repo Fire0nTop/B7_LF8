@@ -46,8 +46,8 @@ import {environment} from '../../../../environments/environment';
 export class PhpConnectionComponent {
   queryForm: FormGroup;
   response: any;
-  error: string = '';
-  isLoading: boolean = false;
+  error = '';
+  isLoading = false;
 
   readonly PHP_ENDPOINT = environment.apiUrl + environment.dbUrl;
 

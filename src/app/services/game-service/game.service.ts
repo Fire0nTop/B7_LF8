@@ -149,7 +149,7 @@ export class GameService {
 
   public getDestroyedShipCount(ship: Ship): number {
     let destroyedShipCellCount = 0
-    this.destroyedShips().forEach((value, key) => {
+    this.destroyedShips().forEach((value) => {
       if (value.destroyedShip?.shipId == ship.shipId) {
         destroyedShipCellCount += 1;
       }

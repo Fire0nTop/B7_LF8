@@ -15,7 +15,7 @@
         <!-- Ship image, aligned top-left and ensures it's filling and not centered -->
         <img
           [src]="shipSrc()"
-          [hidden]="shipSrc() == ''"
+          [hidden]="shipSrc() === ''"
           class="absolute top-0 left-0 w-auto h-auto object-cover max-w-fit z-20"
           alt="{{destroyedShip()?.shipName}}"
           style="min-width: 100%; min-height: 100%;"
@@ -25,9 +25,9 @@
         <img
           [hidden]="!attacked()"
           [src]="resourceService.getHitImgSource(result())"
-          [class.opacity-35]="result() == AttackResult.Miss"
-          [class.opacity-75]="result() == AttackResult.Sunk"
-          [class.mix-blend-screen]="result() != AttackResult.Hit"
+          [class.opacity-35]="result() === AttackResult.Miss"
+          [class.opacity-75]="result() === AttackResult.Sunk"
+          [class.mix-blend-screen]="result() !== AttackResult.Hit"
 
           class="absolute top-0 left-0 w-full h-full object-fill z-30"
           alt="Hit Marker"/>

@@ -14,8 +14,8 @@ export class TestConnectionServiceComponent {
   username = '';
   peerId = '';
   attack:Attack = {x:0,y:0};
-  receivedAttack = signal<String>('')
-  receivedAttackResult = signal<String>('')
+  receivedAttack = signal<string>('')
+  receivedAttackResult = signal<string>('')
   attackResponse = signal<string>('')
   receivedUsername = signal<string>('');
   connectedPeerId = signal<string | null>(null);

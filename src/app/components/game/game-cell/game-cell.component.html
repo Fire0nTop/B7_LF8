@@ -15,7 +15,7 @@
         <!-- Ship image, aligned top-left and ensures it's filling and not centered -->
         <img
           [src]="shipSrc()"
-          [hidden]="shipSrc() == ''"
+          [hidden]="shipSrc() === ''"
           class="absolute top-0 left-0 w-auto h-auto object-cover max-w-fit z-20"
           alt="{{ content()?.shipName }}"
           style="min-width: 100%; min-height: 100%;"

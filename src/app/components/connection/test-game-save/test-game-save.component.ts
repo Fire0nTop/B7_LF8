@@ -6,7 +6,6 @@ import {Spieler} from '@models/Spieler';
 import {CellStatus} from '@models/game/cellSatus';
 import {Zug} from '@models/Zug';
 import {DatabaseService} from '@services/database-service/database.service';
-import {firstValueFrom} from 'rxjs';
 import {Ship} from '@models/ship';
 
 @Component({

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Cell, Rotation} from '@models/game';
+import {Rotation} from '@models/game';
 import {GameService} from '@services/game-service/game.service';
 import {Ship} from '@models/ship';
 import {Attack, AttackResult} from '@models/connection';
