@@ -21,7 +21,7 @@ export class GameOverComponent {
   }
 
   sendGameDataViaEmail() {
-    this.userEmail
+    console.log("sending game data to ", this.userEmail); // TODO: remove this <- line just for es lint for now
     //TODO: Email versand einbinden
   }
 }
