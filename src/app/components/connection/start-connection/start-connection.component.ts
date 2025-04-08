@@ -1,4 +1,4 @@
-import {Component, ElementRef, signal, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, signal, ViewChild} from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ConnectionService} from '@services/connection-serivce/connection.service';
@@ -14,7 +14,7 @@ import {toObservable} from '@angular/core/rxjs-interop';
   ],
   styleUrls: ['./start-connection.component.scss']
 })
-export class StartConnectionComponent {
+export class StartConnectionComponent implements OnInit {
   usernameInput: string = '';
 
   @ViewChild('connectionSection') connectionSection!: ElementRef;
@@ -59,5 +59,11 @@ export class StartConnectionComponent {
 
   onSubmitSQL() {
     this.router.navigate(['/gamecomponent']);
+  }
+
+  ngOnInit(): void {
+    if (this.connectionService.isConnected() || this.connectionService.username() != '' || this.connectionService.peerId() != '') {
+      window.location.reload()
+    }
   }
 }

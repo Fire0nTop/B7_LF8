@@ -73,10 +73,6 @@ export class TestDatabaseServiceComponent {
     this.databaseService.createGame().subscribe(data => this.spiel.set(data));
   }
 
-  getAktivesSpiel() {
-    this.databaseService.getActiveGame().subscribe(data => this.aktivesSpiel.set(data));
-  }
-
   getSchiffPositionen() {
     if (this.spielId !== null) {
       this.databaseService.getShipPositionsByGameId(this.spielId).subscribe(data => this.schiffPositionen.set(data));

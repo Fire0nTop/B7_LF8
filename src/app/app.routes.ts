@@ -7,7 +7,7 @@ import {
 } from '@components/connection/test-connection-service/test-connection-service.component';
 import {PhpConnectionComponent} from '@components/connection/php-connection/php-connection.component';
 import {GameComponent} from '@components/game/game.component';
-import {GameOverComponent} from '@components/winner/game-over.component';
+import {GameOverComponent} from '@components/game-over/game-over.component';
 
 
 
