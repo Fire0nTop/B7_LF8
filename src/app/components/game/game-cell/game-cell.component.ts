@@ -4,7 +4,7 @@ import {GameService} from '@services/game-service/game.service';
 import {Ship} from '@models/ship';
 import { CellStatus } from '@models/game/cellSatus';
 import {ResourceService} from '@services/resource-service/resource.service';
-import {Cell} from '@models/game';
+import {AttackResult} from '@models/connection';
 
 @Component({
   selector: 'app-game-cell',
@@ -51,4 +51,5 @@ export class GameCellComponent implements OnInit {
   }
 
   protected readonly CellStatus = CellStatus;
+  protected readonly AttackResult = AttackResult;
 }

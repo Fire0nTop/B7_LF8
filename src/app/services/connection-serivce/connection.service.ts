@@ -19,6 +19,7 @@ export class ConnectionService {
   otherUsername = signal<string>('');
   isReady = signal<boolean>(false)
   otherIsReady = signal<boolean>(false)
+  savedGameId = signal<string>('');
 
   attackReceived = new Subject<Attack>();
   attackResultReceived = new Subject<AttackResponse>();
@@ -29,7 +30,6 @@ export class ConnectionService {
   public onAttackResultReceived: Observable<AttackResponse> = this.attackResultReceived.pipe(
     takeUntilDestroyed(this.destroyRef)
   );
-  public savedGameId = signal<string>('');
 
   constructor(private peerService: PeerService, private gameService: GameService) {
     this.listenForMessages();

@@ -9,7 +9,6 @@ import {toObservable} from '@angular/core/rxjs-interop';
 import {Spieler} from '@models/Spieler';
 import {firstValueFrom} from 'rxjs';
 import {GameSave} from '@models/connection/game-save';
-import {SchiffPosition} from '@models/SchiffPosition';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -33,10 +32,17 @@ export class GameService {
 
   public readonly isDebugging = signal<boolean>(false)
 
-  constructor(public databaseService: DatabaseService) {
+  public readonly isShowingAttackBoard = signal<boolean>(false)
+
+  public readonly winnerUuid = signal<string>('')
+
+  constructor(public databaseService: DatabaseService, public router: Router) {
     this.board = new Board(Board.BOARD_SIZE, Board.BOARD_SIZE);
     databaseService.getAllShips().subscribe(value => this.ships.set(value))
     toObservable(this.isAttacking).subscribe(value => console.log("isAttacking", value))
+    toObservable(this.isAttacking).subscribe(isAttacking => {
+      this.isShowingAttackBoard.set(isAttacking);
+    })
   }
 
   public async saveGameData(ownGameSave: GameSave, otherGameSave: GameSave) {
@@ -162,7 +168,8 @@ export class GameService {
 
   gameOver(winner: string) {
     this.isAttacking.set(false)
-    //TODO: add navigate to winner page. winner = uuid form winner
+    this.winnerUuid.set(winner)
+    this.router.navigate(['gameOver'])
   }
 
   private getPlayerByUserName(userName: string) {

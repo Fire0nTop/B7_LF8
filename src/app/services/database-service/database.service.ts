@@ -77,15 +77,6 @@ export class DatabaseService {
     );
   }
 
-  getActiveGame() {
-    return this.executeQuery(`SELECT *
-                              FROM spiel
-                              WHERE beendet = false
-                              ORDER BY spiel_id DESC LIMIT 1;`).pipe(
-      map(response => response.records?.length ? this.mapper.mapToSpiel(response.records[0]) : null)
-    );
-  }
-
   setShipPosition(position: SchiffPosition) {
     return this.executeQuery(`
       INSERT INTO schiff_position (schiff_id, spiel_id, position_x, position_y)

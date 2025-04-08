@@ -48,4 +48,5 @@ export class AttackGameCellComponent {
   }
 
   protected readonly CellStatus = CellStatus;
+  protected readonly AttackResult = AttackResult;
 }

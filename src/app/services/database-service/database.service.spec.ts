@@ -59,15 +59,6 @@ describe('DatabaseService', () => {
       const req = httpMock.expectOne(mockUrl);
       expect(req.request.body).toContain('INSERT%20INTO%20spiel%20(spiel_id)%20VALUES%20(1)');
     });
-
-    it('should get aktives Spiel', () => {
-      service.getActiveGame().subscribe();
-
-      const req = httpMock.expectOne(mockUrl);
-      expect(req.request.body).toContain(
-        'SELECT%20*%20FROM%20spiel%20ORDER%20BY%20spiel_id%20DESC%20LIMIT%201%3B'
-      );
-    });
   });
 
   describe('SchiffPosition-Methoden', () => {

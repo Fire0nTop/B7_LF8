@@ -24,7 +24,7 @@
         <!-- Hit marker -->
         <img
           [hidden]="status() !== CellStatus.destroyed"
-          [src]="resourceService.getHitImgSource()"
+          [src]="resourceService.getHitImgSource(AttackResult.Hit)"
           class="absolute top-0 left-0 w-full h-full object-fill z-30"
           alt="Hit Marker"/>
 
