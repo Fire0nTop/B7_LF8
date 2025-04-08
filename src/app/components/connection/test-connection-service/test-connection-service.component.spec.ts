@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestConnectionServiceComponent } from './test-connection-service.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('TestConnectionServiceComponent', () => {
   let component: TestConnectionServiceComponent;
@@ -8,7 +9,7 @@ describe('TestConnectionServiceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestConnectionServiceComponent]
+      imports: [TestConnectionServiceComponent,HttpClientTestingModule]
     })
     .compileComponents();
 

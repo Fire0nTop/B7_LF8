@@ -14,8 +14,7 @@ export class PlayerStatsComponent {
   other = input.required<boolean>()
   protected readonly Rotation = Rotation;
 
-  constructor(protected connectionService: ConnectionService, protected gameService: GameService) {
-  }
+  constructor(protected connectionService: ConnectionService, protected gameService: GameService) {}
 
   getUuid() {
     if (this.other()) {
@@ -41,14 +40,6 @@ export class PlayerStatsComponent {
     this.gameService.selectedRotation.update(value => {
       return value === Rotation.horizontal ? Rotation.vertical : Rotation.horizontal;
     })
-  }
-
-  switchRemoveActive() {
-    this.gameService.isRemoving.update(value => !value)
-  }
-
-  switchIsAttacking() {
-    this.gameService.isAttacking.update(value => !value)
   }
 
   switchReady() {

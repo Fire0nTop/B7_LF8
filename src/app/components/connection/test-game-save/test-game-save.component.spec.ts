@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TestGameSaveComponent } from './test-game-save.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('TestGameSaveComponent', () => {
   let component: TestGameSaveComponent;
@@ -8,7 +9,7 @@ describe('TestGameSaveComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestGameSaveComponent]
+      imports: [TestGameSaveComponent,HttpClientTestingModule]
     })
     .compileComponents();
 

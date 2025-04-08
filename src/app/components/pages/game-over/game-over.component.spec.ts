@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameOverComponent } from './game-over.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('GameOverComponent', () => {
   let component: GameOverComponent;
@@ -8,7 +9,7 @@ describe('GameOverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameOverComponent]
+      imports: [GameOverComponent,HttpClientTestingModule]
     })
     .compileComponents();
 
